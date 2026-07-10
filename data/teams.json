@@ -1,0 +1,323 @@
+{
+    
+"verified_teams":
+[
+  {
+    "idTeam": "Fnatic-2015",
+    "team": "Fnatic",
+    "year": 2015,
+    "players": [
+      { "name": "olofmeister", "role": "Rifler", "overall": 96, "rolesAllowed": ["Rifler", "Entry"], "idPlayer": "olofmeister-2015" },
+      { "name": "JW", "role": "AWP", "overall": 93, "rolesAllowed": ["AWP"] },
+      { "name": "flusha", "role": "Rifler", "overall": 92, "rolesAllowed": ["Rifler", "Support"] },
+      { "name": "KRIMZ", "role": "Support", "overall": 93, "rolesAllowed": ["Support", "Rifler"] },
+      { "name": "pronax", "role": "IGL", "overall": 88, "rolesAllowed": ["IGL"] }
+    ]
+  },
+  {
+    "team": "Luminosity",
+    "year": 2016,
+    "players": [
+      { "name": "coldzera", "role": "Rifler", "overall": 97, "rolesAllowed": ["Rifler"] },
+      { "name": "FalleN", "role": "AWP", "overall": 99, "rolesAllowed": ["AWP", "IGL"] },
+      { "name": "fer", "role": "Entry", "overall": 93, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "TACO", "role": "Support", "overall": 88, "rolesAllowed": ["Support"] },
+      { "name": "fnx", "role": "Rifler", "overall": 90, "rolesAllowed": ["Rifler", "Entry"] }
+    ]
+  },
+  {
+    "team": "SK Gaming",
+    "year": 2017,
+    "players": [
+      { "name": "coldzera", "role": "Rifler", "overall": 96, "rolesAllowed": ["Rifler"] },
+      { "name": "FalleN", "role": "AWP", "overall": 96, "rolesAllowed": ["AWP", "IGL"] },
+      { "name": "fer", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "TACO", "role": "Support", "overall": 87, "rolesAllowed": ["Support"] },
+      { "name": "felps", "role": "Rifler", "overall": 89, "rolesAllowed": ["Rifler", "Entry"] }
+    ]
+  },
+  
+  {
+    "team": "Astralis",
+    "year": 2019,
+    "players": [
+      { "name": "device", "role": "AWP", "overall": 96, "rolesAllowed": ["AWP"] },
+      { "name": "dupreeh", "role": "Entry", "overall": 93, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "gla1ve", "role": "IGL", "overall": 95, "rolesAllowed": ["IGL"] },
+      { "name": "Xyp9x", "role": "Support", "overall": 95, "rolesAllowed": ["Support"] },
+      { "name": "Magisk", "role": "Rifler", "overall": 94, "rolesAllowed": ["Rifler"] }
+    ]
+  },
+  {
+    "team": "NAVI",
+    "year": 2021,
+    "players": [
+      { "name": "s1mple", "role": "AWP", "overall": 99, "rolesAllowed": ["AWP"] },
+      { "name": "electronic", "role": "Rifler", "overall": 95, "rolesAllowed": ["Rifler", "Entry"] },
+      { "name": "b1t", "role": "Rifler", "overall": 92, "rolesAllowed": ["Rifler"] },
+      { "name": "Boombl4", "role": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "Perfecto", "role": "Support", "overall": 91, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "FaZe",
+    "year": 2022,
+    "players": [
+      { "name": "broky", "role": "AWP", "overall": 92, "rolesAllowed": ["AWP"] },
+      { "name": "karrigan", "role": "IGL", "overall": 91, "rolesAllowed": ["IGL"] },
+      { "name": "rain", "role": "Entry", "overall": 93, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "ropz", "role": "Rifler", "overall": 95, "rolesAllowed": ["Rifler"] },
+      { "name": "Twistzz", "role": "Support", "overall": 94, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+  {
+    "team": "G2",
+    "year": 2023,
+    "players": [
+      { "name": "m0NESY", "role": "AWP", "overall": 94, "rolesAllowed": ["AWP"] },
+      { "name": "HooXi", "role": "IGL", "overall": 86, "rolesAllowed": ["IGL"] },
+      { "name": "NiKo", "role": "Rifler", "overall": 96, "rolesAllowed": ["Rifler", "Entry"] },
+      { "name": "huNter-", "role": "Entry", "overall": 91, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "jks", "role": "Support", "overall": 90, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "Virtus.pro",
+    "year": 2014,
+    "players": [
+      { "name": "pashaBiceps", "role": "AWP", "overall": 93, "rolesAllowed": ["AWP"] },
+      { "name": "NEO", "role": "IGL", "overall": 94, "rolesAllowed": ["IGL"] },
+      { "name": "TaZ", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "Snax", "role": "Rifler", "overall": 95, "rolesAllowed": ["Rifler"] },
+      { "name": "byali", "role": "Support", "overall": 91, "rolesAllowed": ["Support", "Entry"] }
+    ]
+  },
+  {
+    "team": "Liquid",
+    "year": 2019,
+    "players": [
+      { "name": "nitr0", "role": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "EliGE", "role": "Rifler", "overall": 94, "rolesAllowed": ["Rifler", "Entry"] },
+      { "name": "NAF", "role": "Rifler", "overall": 93, "rolesAllowed": ["Rifler"] },
+      { "name": "Twistzz", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "Stewie2K", "role": "Support", "overall": 90, "rolesAllowed": ["Support", "Entry"] }
+    ]
+  },
+
+  {
+    "team": "mibr",
+    "year": 2006,
+    "players": [
+      { "name": "cogu", "role": "AWP", "overall": 95, "rolesAllowed": ["AWP"] },
+      { "name": "KIKOOOO", "role": "IGL", "overall": 87, "rolesAllowed": ["IGL", "Support"] },
+      { "name": "fnx", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "nak", "role": "Rifler", "overall": 91, "rolesAllowed": ["Rifler"] },
+      { "name": "bruno", "role": "Support", "overall": 86, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "Immortals",
+    "year": 2017,
+    "players": [
+      { "name": "HEN1", "role": "AWP", "overall": 92, "rolesAllowed": ["AWP"] },
+      { "name": "steel", "role": "IGL", "overall": 86, "rolesAllowed": ["IGL"] },
+      { "name": "kNgV-", "role": "Entry", "overall": 90, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "LUCAS1", "role": "Rifler", "overall": 90, "rolesAllowed": ["Rifler", "Entry"] },
+      { "name": "boltz", "role": "Support", "overall": 89, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+  {
+    "team": "NAVI",
+    "year": 2010,
+    "players": [
+      { "name": "markeloff", "role": "AWP", "overall": 97, "rolesAllowed": ["AWP"] },
+      { "name": "Zeus", "role": "IGL", "overall": 90, "rolesAllowed": ["IGL"] },
+      { "name": "Edward", "role": "Entry", "overall": 94, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "starix", "role": "Support", "overall": 87, "rolesAllowed": ["Support"] },
+      { "name": "ceh9", "role": "Rifler", "overall": 89, "rolesAllowed": ["Rifler"] }
+    ]
+  },
+  {
+    "team": "EnVyUs",
+    "year": 2015,
+    "players": [
+      { "name": "kennyS", "role": "AWP", "overall": 97, "rolesAllowed": ["AWP"] },
+      { "name": "Happy", "role": "IGL", "overall": 92, "rolesAllowed": ["IGL"] },
+      { "name": "apEX", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry"] },
+      { "name": "NBK-", "role": "Support", "overall": 90, "rolesAllowed": ["Support", "Rifler"] },
+      { "name": "kioShiMa", "role": "Rifler", "overall": 89, "rolesAllowed": ["Rifler", "Support"] }
+    ]
+  },
+  {
+    "team": "Cloud9",
+    "year": 2018,
+    "players": [
+      { "name": "Skadoodle", "role": "AWP", "overall": 88, "rolesAllowed": ["AWP"] },
+      { "name": "Stewie2K", "role": "IGL", "overall": 90, "rolesAllowed": ["IGL", "Entry"] },
+      { "name": "autimatic", "role": "Rifler", "overall": 93, "rolesAllowed": ["Rifler"] },
+      { "name": "tarik", "role": "Entry", "overall": 91, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "RUSH", "role": "Support", "overall": 88, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "Gambit",
+    "year": 2017,
+    "players": [
+      { "name": "mou", "role": "AWP", "overall": 89, "rolesAllowed": ["AWP"] },
+      { "name": "Zeus", "role": "IGL", "overall": 89, "rolesAllowed": ["IGL"] },
+      { "name": "HObbit", "role": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "AdreN", "role": "Rifler", "overall": 91, "rolesAllowed": ["Rifler"] },
+      { "name": "Dosia", "role": "Support", "overall": 87, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "Vitality",
+    "year": 2023,
+    "players": [
+      { "name": "ZywOo", "role": "AWP", "overall": 98, "rolesAllowed": ["AWP"] },
+      { "name": "apEX", "role": "IGL", "overall": 89, "rolesAllowed": ["IGL"] },
+      { "name": "flameZ", "role": "Entry", "overall": 89, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "Spinx", "role": "Rifler", "overall": 93, "rolesAllowed": ["Rifler"] },
+      { "name": "Magisk", "role": "Support", "overall": 92, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+
+   {
+    "team": "NAVI",
+    "year": 2024,
+    "players": [
+      { "name": "w0nderful", "defaultRole": "AWP", "overall": 90, "rolesAllowed": ["AWP"] },
+      { "name": "Aleksib", "defaultRole": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "jL", "defaultRole": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "b1t", "defaultRole": "Rifler", "overall": 93, "rolesAllowed": ["Rifler"] },
+      { "name": "iM", "defaultRole": "Support", "overall": 89, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+
+  {
+    "team": "Ninjas in Pyjamas",
+    "year": 2015,
+    "players": [
+      { "name": "allu", "defaultRole": "AWP", "overall": 90, "rolesAllowed": ["AWP"] },
+      { "name": "Xizt", "defaultRole": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "friberg", "defaultRole": "Entry", "overall": 91, "rolesAllowed": ["Entry"] },
+      { "name": "f0rest", "defaultRole": "Rifler", "overall": 96, "rolesAllowed": ["Rifler", "AWP"] },
+      { "name": "GeT_RiGhT", "defaultRole": "Support", "overall": 97, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+
+  {
+    "team": "FaZe",
+    "year": 2017,
+    "players": [
+      { "name": "GuardiaN", "defaultRole": "AWP", "overall": 96, "rolesAllowed": ["AWP"] },
+      { "name": "karrigan", "defaultRole": "IGL", "overall": 91, "rolesAllowed": ["IGL"] },
+      { "name": "NiKo", "defaultRole": "Entry", "overall": 98, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "rain", "defaultRole": "Rifler", "overall": 92, "rolesAllowed": ["Rifler", "Entry"] },
+      { "name": "olofmeister", "defaultRole": "Support", "overall": 93, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+
+  {
+  "team": "FURIA",
+  "year": 2025,
+  "players": [
+    { "name": "molodoy", "defaultRole": "AWP", "overall": 89, "rolesAllowed": ["AWP"] },
+    { "name": "FalleN", "defaultRole": "IGL", "overall": 90, "rolesAllowed": ["IGL", "AWP"] },
+    { "name": "YEKINDAR", "defaultRole": "Entry", "overall": 91, "rolesAllowed": ["Entry", "Rifler"] },
+    { "name": "yuurih", "defaultRole": "Rifler", "overall": 94, "rolesAllowed": ["Rifler"] },
+    { "name": "KSCERATO", "defaultRole": "Support", "overall": 96, "rolesAllowed": ["Support", "Rifler"] }
+  ]
+},
+
+  {
+    "team": "LDLC",
+    "year": 2014,
+    "players": [
+      { "name": "SmithZz", "defaultRole": "AWP", "overall": 87, "rolesAllowed": ["AWP"] },
+      { "name": "Happy", "defaultRole": "IGL", "overall": 94, "rolesAllowed": ["IGL"] },
+      { "name": "shox", "defaultRole": "Entry", "overall": 95, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "NBK-", "defaultRole": "Rifler", "overall": 91, "rolesAllowed": ["Rifler", "Support"] },
+      { "name": "kioShiMa", "defaultRole": "Support", "overall": 89, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+  {
+  "team": "VeryGames",
+  "year": 2013,
+  "players": [
+    { "name": "SmithZz", "defaultRole": "AWP", "overall": 88, "rolesAllowed": ["AWP"] },
+    { "name": "Ex6TenZ", "defaultRole": "IGL", "overall": 89, "rolesAllowed": ["IGL"] },
+    { "name": "shox", "defaultRole": "Entry", "overall": 94, "rolesAllowed": ["Entry", "Rifler"] },
+    { "name": "ScreaM", "defaultRole": "Rifler", "overall": 92, "rolesAllowed": ["Rifler"] },
+    { "name": "NBK-", "defaultRole": "Support", "overall": 90, "rolesAllowed": ["Support", "Rifler"] }
+  ]
+},
+  {
+    "team": "Titan",
+    "year": 2014,
+    "players": [
+      { "name": "kennyS", "defaultRole": "AWP", "overall": 96, "rolesAllowed": ["AWP"] },
+      { "name": "Ex6TenZ", "defaultRole": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "apEX", "defaultRole": "Entry", "overall": 91, "rolesAllowed": ["Entry"] },
+      { "name": "Maniac", "defaultRole": "Rifler", "overall": 84, "rolesAllowed": ["Rifler", "Support"] },
+      { "name": "RpK", "defaultRole": "Support", "overall": 89, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+  
+  {
+    "team": "HellRaisers",
+    "year": 2014,
+    "players": [
+      { "name": "ANGE1", "defaultRole": "IGL", "overall": 87, "rolesAllowed": ["IGL"] },
+      { "name": "markeloff", "defaultRole": "AWP", "overall": 92, "rolesAllowed": ["AWP"] },
+      { "name": "Dosia", "defaultRole": "Entry", "overall": 88, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "AdreN", "defaultRole": "Rifler", "overall": 89, "rolesAllowed": ["Rifler"] },
+      { "name": "kucher", "defaultRole": "Support", "overall": 84, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "ENCE",
+    "year": 2019,
+    "players": [
+      { "name": "allu", "defaultRole": "AWP", "overall": 90, "rolesAllowed": ["AWP"] },
+      { "name": "Aleksib", "defaultRole": "IGL", "overall": 88, "rolesAllowed": ["IGL"] },
+      { "name": "sergej", "defaultRole": "Entry", "overall": 92, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "Aerial", "defaultRole": "Rifler", "overall": 86, "rolesAllowed": ["Rifler"] },
+      { "name": "xseveN", "defaultRole": "Support", "overall": 84, "rolesAllowed": ["Support"] }
+    ]
+  },
+  {
+    "team": "OpTic Gaming",
+    "year": 2016,
+    "players": [
+      { "name": "mixwell", "defaultRole": "AWP", "overall": 88, "rolesAllowed": ["AWP"] },
+      { "name": "stanislaw", "defaultRole": "IGL", "overall": 87, "rolesAllowed": ["IGL"] },
+      { "name": "tarik", "defaultRole": "Entry", "overall": 90, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "RUSH", "defaultRole": "Rifler", "overall": 87, "rolesAllowed": ["Rifler"] },
+      { "name": "NAF", "defaultRole": "Support", "overall": 89, "rolesAllowed": ["Support", "Rifler"] }
+    ]
+  },
+  {
+    "team": "NAVI",
+    "year": 2016,
+    "players": [
+      { "name": "GuardiaN", "defaultRole": "AWP", "overall": 96, "rolesAllowed": ["AWP"] },
+      { "name": "Zeus", "defaultRole": "IGL", "overall": 89, "rolesAllowed": ["IGL"] },
+      { "name": "flamie", "defaultRole": "Entry", "overall": 91, "rolesAllowed": ["Entry", "Rifler"] },
+      { "name": "s1mple", "defaultRole": "Rifler", "overall": 94, "rolesAllowed": ["Rifler", "AWP"] },
+      { "name": "Edward", "defaultRole": "Support", "overall": 88, "rolesAllowed": ["Support", "Entry"] }
+    ]
+  },
+
+  {
+  "team": "Liquid",
+  "year": 2016,
+  "players": [
+    { "name": "s1mple", "defaultRole": "AWP", "overall": 94, "rolesAllowed": ["AWP", "Rifler"] },
+    { "name": "adreN", "defaultRole": "IGL", "overall": 85, "rolesAllowed": ["IGL"] },
+    { "name": "EliGE", "defaultRole": "Entry", "overall": 89, "rolesAllowed": ["Entry", "Rifler"] },
+    { "name": "nitr0", "defaultRole": "Rifler", "overall": 88, "rolesAllowed": ["Rifler", "IGL"] },
+    { "name": "Hiko", "defaultRole": "Support", "overall": 91, "rolesAllowed": ["Support", "Rifler"] }
+  ]
+}
+]}
