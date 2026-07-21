@@ -15,24 +15,44 @@ export default function Draft(){
 
 const [draftedTeams, setDraftedTeams] = useState<Team[]>([]);
 const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-const [sendPlayer, setSendPlayer] = useState<Player | null>(null)
+const [starPlayer, setStarPlayer] = useState<Player | null>(null);
 const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
+const [rodadas, setRodadas] = useState(1)
 
-
-function placePlayer(index: number) {
-    if (!selectedPlayer) return;
+function placePlayer(index: number): boolean {
+    if (!selectedPlayer) return false;
+    if (cards[index]) return false;
 
     const newCards = [...cards];
     newCards[index] = selectedPlayer;
     setCards(newCards);
+
+    setSelectedPlayer(null);
+    setRodadas(prev => prev + 1);
+    setDraftedTeams(getRandomTeams());
+
+    return true;
 }
 
-const [rodadas, setRodadas] = useState(1)
+function placeStarPlayer(): boolean {
+    if (!selectedPlayer) return false;
+    if (starPlayer) return false;
+
+    setStarPlayer(selectedPlayer);
+    setSelectedPlayer(null);
+
+    setRodadas(prev => prev + 1);
+    setDraftedTeams(getRandomTeams());
+
+    return true;
+}   
+
+
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setDraftedTeams(getRandomTeams());
-}, [sendPlayer]);
+}, []);
 
 if (draftedTeams.length === 0) {
     return (
@@ -64,15 +84,15 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={sendPlayer} setSendPlayer={selectedPlayer} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <StarPlayer starPlayer={starPlayer} onclick={placeStarPlayer} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
-                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} />
+                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
-                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} />
+                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
@@ -98,15 +118,15 @@ if (draftedTeams.length === 0) {
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={sendPlayer} onclick={() => setSendPlayer(selectedPlayer)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <StarPlayer starPlayer={starPlayer} onclick={placeStarPlayer} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
-                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} />
+                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
-                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} />
+                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">

@@ -5,24 +5,13 @@ import { Player, Team } from "@/lib/types/team";
 
 type Props = {
     starPlayer: Player | null;
-    setSendPlayer: Player | null
-    setRodadas: React.Dispatch<React.SetStateAction<number>>;
-    setDraftedTeams: React.Dispatch<React.SetStateAction<Team[]>>
+    onclick: () => boolean
+ 
 }
 
-export default function StarPlayer({starPlayer, setSendPlayer, setRodadas, setDraftedTeams}: Props){
+export default function StarPlayer({starPlayer, onclick}: Props){
 
     const StarPlayer = starPlayer
-    console.log(StarPlayer)
-
-    function Cont(){
-        setRodadas(prev => prev + 1);
-    }
-
-    function Functions(){
-        Cont()
-        setDraftedTeams(getRandomTeams)
-    }
 
     if(starPlayer){
         return(
@@ -46,7 +35,7 @@ export default function StarPlayer({starPlayer, setSendPlayer, setRodadas, setDr
         )
     }
         return(
-            <button onClick={Functions}>
+            <button onClick={onclick}>
                 <div className="flex bg-[#C8A24A] w-full rounded-tr-4xl">
                     <p className="text-xl font-bold px-4 py-0.5">Star Player</p>
                 </div> 

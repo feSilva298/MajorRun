@@ -6,24 +6,11 @@ import { getRandomTeams } from "@/lib/teams"
 
 type Props = {
     player: Player | null;
-    onclick: () => void
-    setRodadas: React.Dispatch<React.SetStateAction<number>>;
-    setDraftedTeams: React.Dispatch<React.SetStateAction<Team[]>>
+    onclick: () => boolean
 }
 
-export default function CardPlayers({player, onclick, setRodadas, setDraftedTeams}: Props){
+export default function CardPlayers({player, onclick}: Props){
     const sentPlayer = player
-    console.log(onclick)
-
-     function Cont(){
-        setRodadas(prev => prev + 1);
-    }
-
-    function countainsPlayer(){
-        setDraftedTeams(getRandomTeams)
-        onclick()
-        Cont()
-    }
 
     if(sentPlayer){
         return(
@@ -40,7 +27,7 @@ export default function CardPlayers({player, onclick, setRodadas, setDraftedTeam
         )
     }
         return(
-            <button onClick={countainsPlayer}>
+            <button onClick={onclick}>
                 <div className=" flex flex-col justify-center items-center w-[440px] h-[200px] bg-[#1C1C22] border-[#0B0B0F] border">
                     <div className="flex flex-col p-6">
                         <p className="text-3xl text-[#EDEDED]">+</p>
