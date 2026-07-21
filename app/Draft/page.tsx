@@ -1,13 +1,49 @@
+"use client"
+
 import CardPlayers from "@/components/cardPlayers"
 import StarPlayer from "@/components/starplayer"
 import Stats from "@/components/stastistics"
 import SelectPlayers from "@/components/selectplayers"
 import RerollTeams from "@/components/rerollteams"
 import Link from "next/link"
+import { getRandomTeams } from "@/lib/teams"
+import { Player, Team } from "@/lib/types/team"
+import { useState, useEffect } from "react"
+
 
 export default function Draft(){
 
-    const rodadas:number = 6
+const [draftedTeams, setDraftedTeams] = useState<Team[]>([]);
+const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
+const [sendPlayer, setSendPlayer] = useState<Player | null>(null)
+const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
+
+
+function placePlayer(index: number) {
+    if (!selectedPlayer) return;
+
+    const newCards = [...cards];
+    newCards[index] = selectedPlayer;
+    setCards(newCards);
+}
+
+const [rodadas, setRodadas] = useState(1)
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setDraftedTeams(getRandomTeams());
+}, [sendPlayer]);
+
+if (draftedTeams.length === 0) {
+    return (
+        <div className="flex items-center justify-center h-screen bg-[#0B0B0F] text-[#ededed]">
+            Carregando...
+        </div>
+    );
+}
+
+
+    
 
     if (rodadas == 6) {
         return(
@@ -15,7 +51,7 @@ export default function Draft(){
             <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
                 <div className="flex justify-center gap-330">
                     <p className="text-[#ededed] font-bold font-bebas text-6xl">Draft</p>
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada 1/5</p>
+                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada 5/5</p>
                 </div>
                 <div className="flex justify-center gap-6">
                 
@@ -28,15 +64,15 @@ export default function Draft(){
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer/>
+                        <StarPlayer starPlayer={sendPlayer} setSendPlayer={selectedPlayer} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers />
-                        <CardPlayers/>
+                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers/>
-                        <CardPlayers/>
+                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
@@ -53,24 +89,24 @@ export default function Draft(){
             <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
                 <div className="flex justify-center gap-330">
                     <p className="text-[#ededed] font-bold font-bebas text-6xl">Draft</p>
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada 1/5</p>
+                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada {rodadas}/5</p>
                 </div>
                 <div className="flex justify-center gap-6">
-                <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                   <SelectPlayers/>
-                   <RerollTeams/>
+                <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6 gap-4">
+                   <SelectPlayers  selectedTeams={draftedTeams} onSelectPlayer={setSelectedPlayer} />
+                   <RerollTeams setDraftedTeams={setDraftedTeams} />
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer/>
+                        <StarPlayer starPlayer={sendPlayer} onclick={() => setSendPlayer(selectedPlayer)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers />
-                        <CardPlayers/>
+                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers/>
-                        <CardPlayers/>
+                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
+                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} setRodadas={setRodadas} setDraftedTeams={setDraftedTeams} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">

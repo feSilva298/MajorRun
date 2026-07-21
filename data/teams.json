@@ -1,8 +1,5 @@
-{
-    
-"verified_teams":
 [
-  {
+{
     "idTeam": "Fnatic-2015",
     "team": "Fnatic",
     "year": 2015,
@@ -320,4 +317,4 @@
     { "name": "Hiko", "defaultRole": "Support", "overall": 91, "rolesAllowed": ["Support", "Rifler"] }
   ]
 }
-]}
+]

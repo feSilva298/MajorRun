@@ -1,6 +1,7 @@
+"use client "
+
 import CardPlayers from "@/components/cardPlayers"
 import StarPlayer from "@/components/starplayer"
-import Stats from "@/components/stastistics"
 import Link from "next/link"
 
 export default function PreJogo(){

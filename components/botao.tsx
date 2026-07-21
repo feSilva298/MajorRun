@@ -1,5 +1,5 @@
 import teams from "@/data/teams_with_ids.json"
-import { Team, Player } from "@/.next/types/team";
+import { Team, Player } from "@/lib/types/team";
 //type Props = {
   //  onclick: () => void
 //}
