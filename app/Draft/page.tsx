@@ -9,7 +9,7 @@ import Link from "next/link"
 import { getRandomTeams } from "@/lib/teams"
 import { Player, Team } from "@/lib/types/team"
 import { useState, useEffect } from "react"
-
+import json from "@/data/teams_with_ids.json"
 
 export default function Draft(){
 
@@ -18,6 +18,11 @@ const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 const [starPlayer, setStarPlayer] = useState<Player | null>(null);
 const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
 const [rodadas, setRodadas] = useState(1)
+const [countReroll, setCountReroll] = useState(0)
+const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
+
+
+console.log(removeTeam.length)
 
 function placePlayer(index: number): boolean {
     if (!selectedPlayer) return false;
@@ -29,25 +34,25 @@ function placePlayer(index: number): boolean {
 
     setSelectedPlayer(null);
     setRodadas(prev => prev + 1);
+    setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
     setDraftedTeams(getRandomTeams());
 
     return true;
 }
-
+    console.log(removeTeam)
 function placeStarPlayer(): boolean {
     if (!selectedPlayer) return false;
     if (starPlayer) return false;
-
+    
     setStarPlayer(selectedPlayer);
     setSelectedPlayer(null);
 
     setRodadas(prev => prev + 1);
+    setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
     setDraftedTeams(getRandomTeams());
 
     return true;
 }   
-
-
 
     useEffect(() => {
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -84,15 +89,15 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} onclick={placeStarPlayer} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} />
-                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} />
+                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
+                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} />
-                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} />
+                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} />
+                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
@@ -114,19 +119,20 @@ if (draftedTeams.length === 0) {
                 <div className="flex justify-center gap-6">
                 <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6 gap-4">
                    <SelectPlayers  selectedTeams={draftedTeams} onSelectPlayer={setSelectedPlayer} />
-                   <RerollTeams setDraftedTeams={setDraftedTeams} />
+                   {countReroll >= 3 ? "" : <RerollTeams setDraftedTeams={setDraftedTeams} setCountReroll={setCountReroll}  /> }
+                   
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} onclick={placeStarPlayer} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} onclick={() => placePlayer(0)} />
-                        <CardPlayers player={cards[1]} onclick={() => placePlayer(1)} />
+                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
+                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} onclick={() => placePlayer(2)} />
-                        <CardPlayers player={cards[3]} onclick={() => placePlayer(3)} />
+                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} />
+                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">

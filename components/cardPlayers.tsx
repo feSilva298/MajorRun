@@ -6,10 +6,10 @@ import { getRandomTeams } from "@/lib/teams"
 
 type Props = {
     player: Player | null;
-    onclick: () => boolean
+    handleClick: () => boolean
 }
 
-export default function CardPlayers({player, onclick}: Props){
+export default function CardPlayers({player, handleClick}: Props){
     const sentPlayer = player
 
     if(sentPlayer){
@@ -27,7 +27,7 @@ export default function CardPlayers({player, onclick}: Props){
         )
     }
         return(
-            <button onClick={onclick}>
+            <button onClick={handleClick}>
                 <div className=" flex flex-col justify-center items-center w-[440px] h-[200px] bg-[#1C1C22] border-[#0B0B0F] border">
                     <div className="flex flex-col p-6">
                         <p className="text-3xl text-[#EDEDED]">+</p>

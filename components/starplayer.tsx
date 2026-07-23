@@ -5,13 +5,14 @@ import { Player, Team } from "@/lib/types/team";
 
 type Props = {
     starPlayer: Player | null;
-    onclick: () => boolean
+    handleClick: () => boolean
  
 }
 
-export default function StarPlayer({starPlayer, onclick}: Props){
+export default function StarPlayer({starPlayer, handleClick}: Props){
 
     const StarPlayer = starPlayer
+
 
     if(starPlayer){
         return(
@@ -35,7 +36,7 @@ export default function StarPlayer({starPlayer, onclick}: Props){
         )
     }
         return(
-            <button onClick={onclick}>
+            <button onClick={handleClick}>
                 <div className="flex bg-[#C8A24A] w-full rounded-tr-4xl">
                     <p className="text-xl font-bold px-4 py-0.5">Star Player</p>
                 </div> 
