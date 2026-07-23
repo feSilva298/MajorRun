@@ -1,7 +1,7 @@
 "use client"    
 
-import { Player, Team } from "@/lib/types/team"
-import { getRandomTeams } from "@/lib/teams"
+import { Player } from "@/lib/types/team"
+import { useState } from "react"
 
 
 type Props = {
@@ -10,7 +10,24 @@ type Props = {
 }
 
 export default function CardPlayers({player, handleClick}: Props){
+    const [value, setValue] = useState(0)
+    const [active, setActive] = useState(false)
     const sentPlayer = player
+
+    function SwitchRole(index:number) {
+        if(sentPlayer?.rolesAllowed.length === 1) return;
+
+        if(active){
+            setValue(value - 1)
+        }
+        else{
+            setValue(value + 1)
+        }
+
+        setActive(!active)
+
+        return sentPlayer?.rolesAllowed[index]
+    }
 
     if(sentPlayer){
         return(
@@ -20,7 +37,9 @@ export default function CardPlayers({player, handleClick}: Props){
                 <p className=" text-xl text-[#EDEDED]">{sentPlayer?.teamYear}</p>
             </div>
             <div className="flex justify-end p-6 items-baseline space-x-4">
-                <p className="text-[#EDEDED] text-xl">{sentPlayer?.defaultRole}</p>
+                <button onClick={() => SwitchRole(value)}>
+                    <p className="text-[#EDEDED] text-xl">{sentPlayer?.rolesAllowed[value]}</p>
+                </button>
                 <p className="font-bold text-4xl text-[#EDEDED]">{sentPlayer?.overall}</p>
             </div>
         </div></>
