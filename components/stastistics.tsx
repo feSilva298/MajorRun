@@ -7,7 +7,6 @@ type Props = {
 
 export default function Stats({overallStarPlayer, overallPlayers}: Props){
 
-
     function averageOverallTeam(){
 
         const OVL_StarPlayer = overallStarPlayer?.overall
@@ -37,7 +36,7 @@ export default function Stats({overallStarPlayer, overallPlayers}: Props){
             </div>
 
             <div className="flex flex-col gap-12">
-                <p className="text-[#ededed] font-semibold">Overall: {averageOverallTeam()}</p>
+                <p className="text-[#ededed] font-semibold">Overall: <span className="text-[#c8a24a] text-xl">{averageOverallTeam()}</span></p>
                 <p className="text-[#ededed] font-semibold">Sei la</p>
             </div>
         </div>

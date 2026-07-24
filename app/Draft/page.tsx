@@ -17,7 +17,7 @@ const [draftedTeams, setDraftedTeams] = useState<Team[]>([]);
 const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 const [starPlayer, setStarPlayer] = useState<Player | null>(null);
 const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
-const [rodadas, setRodadas] = useState(1)
+const [rounds, setRounds] = useState(1)
 const [countReroll, setCountReroll] = useState(0)
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
 
@@ -30,12 +30,12 @@ function placePlayer(index: number): boolean {
     setCards(newCards);
 
     setSelectedPlayer(null);
-    setRodadas(prev => prev + 1);
+    setRounds(prev => prev + 1);
     setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
-    setDraftedTeams(getRandomTeams());
 
     return true;
 }
+
     
 function placeStarPlayer(): boolean {
     if (!selectedPlayer) return false;
@@ -44,15 +44,14 @@ function placeStarPlayer(): boolean {
     setStarPlayer(selectedPlayer);
     setSelectedPlayer(null);
 
-    setRodadas(prev => prev + 1);
+    setRounds(prev => prev + 1);
     setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
-    setDraftedTeams(getRandomTeams());
 
     return true;
 }   
     useEffect(() => { 
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setDraftedTeams(getRandomTeams());
+        setDraftedTeams(getRandomTeams(removeTeam));
 }, [removeTeam]);
 
 if (draftedTeams.length === 0) {
@@ -62,7 +61,7 @@ if (draftedTeams.length === 0) {
         </div>
     );
 }
-    if (rodadas == 6) {
+    if (rounds == 6) {
         return(
             <>
             <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
@@ -105,7 +104,7 @@ if (draftedTeams.length === 0) {
             <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
                 <div className="flex justify-center gap-330">
                     <p className="text-[#ededed] font-bold font-bebas text-6xl">Draft</p>
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada {rodadas}/5</p>
+                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada {rounds}/5</p>
                 </div>
                 <div className="flex justify-center gap-6">
                 <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6 gap-4">

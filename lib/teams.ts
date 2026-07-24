@@ -1,6 +1,6 @@
-import teams from "@/data/teams_with_ids.json"
+import { Team } from "./types/team"
 
-export function getRandomTeams() {
+export function getRandomTeams(teams: Team[]) {
     const index1 = Math.floor(Math.random() * teams.length)
 
     let index2 = Math.floor(Math.random() * teams.length)
