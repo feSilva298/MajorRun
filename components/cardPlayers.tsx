@@ -2,11 +2,11 @@
 
 import { Player } from "@/lib/types/team"
 import { useState } from "react"
-
+import { ArrowLeftRight } from "lucide-react";
 
 type Props = {
-    player: Player | null;
-    handleClick: () => boolean
+    player?: Player | null;
+    handleClick?: () => boolean
 }
 
 export default function CardPlayers({player, handleClick}: Props){
@@ -36,13 +36,20 @@ export default function CardPlayers({player, handleClick}: Props){
                 <p className="text-4xl font-bold text-[#EDEDED]">{sentPlayer?.name}</p>
                 <p className=" text-xl text-[#EDEDED]">{sentPlayer?.teamYear}</p>
             </div>
-            <div className="flex justify-end p-6 items-baseline space-x-4">
-                <button onClick={() => SwitchRole(value)}>
-                    <p className="text-[#EDEDED] text-xl">{sentPlayer?.rolesAllowed[value]}</p>
-                </button>
+
+            {sentPlayer?.rolesAllowed.length === 1 ? <div className="flex justify-end p-6 items-baseline space-x-4">
+                    <p className="text-[#EDEDED] text-xl">{sentPlayer?.rolesAllowed[0]}</p>
                 <p className="font-bold text-4xl text-[#EDEDED]">{sentPlayer?.overall}</p>
-            </div>
-        </div></>
+            </div> : <div className="flex justify-end p-6 items-baseline space-x-4">
+                <div className="flex gap-2">
+                    <button onClick={() => SwitchRole(value)}>
+                        <ArrowLeftRight className="w-5 h-5 text-[#ededed]"/>
+                    </button>
+                    <p className="text-[#EDEDED] text-xl">{sentPlayer?.rolesAllowed[value]}</p>
+                </div>
+                <p className="font-bold text-4xl text-[#EDEDED]">{sentPlayer?.overall}</p>
+            </div>} 
+            </div></>
         )
     }
         return(

@@ -21,14 +21,11 @@ const [rodadas, setRodadas] = useState(1)
 const [countReroll, setCountReroll] = useState(0)
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
 
-
-console.log(removeTeam.length)
-
 function placePlayer(index: number): boolean {
     if (!selectedPlayer) return false;
     if (cards[index]) return false;
 
-    const newCards = [...cards];
+    const newCards = [...cards];                                                
     newCards[index] = selectedPlayer;
     setCards(newCards);
 
@@ -39,7 +36,7 @@ function placePlayer(index: number): boolean {
 
     return true;
 }
-    console.log(removeTeam)
+    
 function placeStarPlayer(): boolean {
     if (!selectedPlayer) return false;
     if (starPlayer) return false;
@@ -53,11 +50,10 @@ function placeStarPlayer(): boolean {
 
     return true;
 }   
-
-    useEffect(() => {
+    useEffect(() => { 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setDraftedTeams(getRandomTeams());
-}, []);
+}, [removeTeam]);
 
 if (draftedTeams.length === 0) {
     return (
@@ -66,10 +62,6 @@ if (draftedTeams.length === 0) {
         </div>
     );
 }
-
-
-    
-
     if (rodadas == 6) {
         return(
             <>
@@ -86,7 +78,6 @@ if (draftedTeams.length === 0) {
                         </Link>
                     </div>
                 
-                
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
                         <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} />
@@ -101,7 +92,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats/>
+                    <Stats overallStarPlayer={starPlayer} overallPlayers={cards} />
                 </div>  
             </div>
             </div>    
@@ -136,7 +127,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats/>
+                    <Stats overallStarPlayer={starPlayer} overallPlayers={cards}/>
                 </div>  
             </div>
             </div> 

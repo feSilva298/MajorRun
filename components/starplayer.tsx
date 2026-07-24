@@ -5,8 +5,8 @@ import { Player } from "@/lib/types/team";
 import { ArrowLeftRight } from "lucide-react";
 
 type Props = {
-    starPlayer: Player | null;
-    handleClick: () => boolean
+    starPlayer?: Player | null;
+    handleClick?: () => boolean
  
 }
 

@@ -1,4 +1,31 @@
-export default function Stats(){
+import { Player } from "@/lib/types/team"
+
+type Props = {
+    overallStarPlayer: Player | null
+    overallPlayers: (Player | null)[]
+}
+
+export default function Stats({overallStarPlayer, overallPlayers}: Props){
+
+
+    function averageOverallTeam(){
+
+        const OVL_StarPlayer = overallStarPlayer?.overall
+        const OVL_Players = overallPlayers.map((item) => item?.overall)
+       
+
+        if(OVL_Players.length === 0) return
+        const sumPlayers = OVL_Players.reduce((acc, num) => (acc ?? 0) + (num ?? 0), 0);
+        
+
+        if(!OVL_StarPlayer) return
+        if(!sumPlayers) return
+
+        const average = (OVL_StarPlayer + sumPlayers) / 5
+        
+        return average
+    }
+        
     return(
         <>
         <div className="flex flex-col justify-center gap-10">
@@ -10,7 +37,7 @@ export default function Stats(){
             </div>
 
             <div className="flex flex-col gap-12">
-                <p className="text-[#ededed] font-semibold">Overall:</p>
+                <p className="text-[#ededed] font-semibold">Overall: {averageOverallTeam()}</p>
                 <p className="text-[#ededed] font-semibold">Sei la</p>
             </div>
         </div>
