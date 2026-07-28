@@ -20,6 +20,8 @@ const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
 const [rounds, setRounds] = useState(1)
 const [countReroll, setCountReroll] = useState(0)
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
+const [choosenPlayer, setChoosenPlayer] = useState<(Player | null)[]>([])
+const [valueIndex, setValueIndex] = useState(0)
 
 function placePlayer(index: number): boolean {
     if (!selectedPlayer) return false;
@@ -30,25 +32,35 @@ function placePlayer(index: number): boolean {
     setCards(newCards);
 
     setSelectedPlayer(null);
+    setChoosenPlayer((previous) =>[...previous, newCards[index]])
     setRounds(prev => prev + 1);
     setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
 
     return true;
 }
-
     
 function placeStarPlayer(): boolean {
     if (!selectedPlayer) return false;
     if (starPlayer) return false;
     
     setStarPlayer(selectedPlayer);
+    setChoosenPlayer([...choosenPlayer, selectedPlayer])
     setSelectedPlayer(null);
-
     setRounds(prev => prev + 1);
     setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
 
     return true;
-}   
+}
+
+function SwitchRole(index:number) {
+        if(!starPlayer) return
+        if(starPlayer?.rolesAllowed.length === 1) return;
+
+        setValueIndex((prev) => prev === 0 ? 1 : 0)
+
+        return index
+    }
+
     useEffect(() => { 
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setDraftedTeams(getRandomTeams(removeTeam));
@@ -79,7 +91,7 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRole} value={valueIndex} />
                     </div>
                     <div className="flex gap-6">
                         <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
@@ -91,7 +103,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats overallStarPlayer={starPlayer} overallPlayers={cards} />
+                    <Stats players={choosenPlayer} index={valueIndex} />
                 </div>  
             </div>
             </div>    
@@ -114,7 +126,7 @@ if (draftedTeams.length === 0) {
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRole} value={valueIndex} />
                     </div>
                     <div className="flex gap-6">
                         <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
@@ -126,7 +138,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats overallStarPlayer={starPlayer} overallPlayers={cards}/>
+                    <Stats players={choosenPlayer} index={valueIndex}/>
                 </div>  
             </div>
             </div> 
