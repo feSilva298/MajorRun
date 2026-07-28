@@ -21,8 +21,11 @@ const [rounds, setRounds] = useState(1)
 const [countReroll, setCountReroll] = useState(0)
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
 const [choosenPlayer, setChoosenPlayer] = useState<(Player | null)[]>([])
-const [valueIndex, setValueIndex] = useState(0)
+const [starPlayerIdxValue, setStarPlayerIdxValue] = useState(0)
+const [playerIdxValue, setPlayerIdxValue] = useState([0,0,0,0])
 
+
+//functions Players ---------------------------------------------------------------------------------
 function placePlayer(index: number): boolean {
     if (!selectedPlayer) return false;
     if (cards[index]) return false;
@@ -38,7 +41,27 @@ function placePlayer(index: number): boolean {
 
     return true;
 }
-    
+
+function switchRolePlayer(cardIndex: number) {
+    if (!cards[cardIndex]) return;
+    if (cards[cardIndex]!.rolesAllowed.length === 1) return;
+
+    setPlayerIdxValue(prev => {
+        const next = [...prev];
+
+        next[cardIndex] =
+            next[cardIndex] === cards[cardIndex]!.rolesAllowed.length - 1
+                ? 0
+                : next[cardIndex] + 1;
+
+        return next;
+    });
+}
+//-------------------------------------------------------------------------------------------------
+
+
+
+//functions Star Player ---------------------------------------------------------------------------
 function placeStarPlayer(): boolean {
     if (!selectedPlayer) return false;
     if (starPlayer) return false;
@@ -52,14 +75,15 @@ function placeStarPlayer(): boolean {
     return true;
 }
 
-function SwitchRole(index:number) {
+function SwitchRoleStarPlayer(index:number) {
         if(!starPlayer) return
         if(starPlayer?.rolesAllowed.length === 1) return;
 
-        setValueIndex((prev) => prev === 0 ? 1 : 0)
+        setStarPlayerIdxValue((prev) => prev === 0 ? 1 : 0)
 
         return index
     }
+//----------------------------------------------------------------------------------------------
 
     useEffect(() => { 
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -91,19 +115,19 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRole} value={valueIndex} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRoleStarPlayer} value={starPlayerIdxValue} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
-                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} />
+                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={playerIdxValue[0]} cardIndex={0} />
+                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={playerIdxValue[1]} cardIndex={1} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} />
-                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} />
+                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={playerIdxValue[2]} cardIndex={2}/>
+                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={playerIdxValue[3]} cardIndex={3} />
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={choosenPlayer} index={valueIndex} />
+                    <Stats players={cards} playerRoleIdx={playerIdxValue} starPlayerIdx={starPlayerIdxValue} starPlayer={starPlayer} team={choosenPlayer} />
                 </div>  
             </div>
             </div>    
@@ -126,19 +150,19 @@ if (draftedTeams.length === 0) {
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRole} value={valueIndex} />
+                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRoleStarPlayer} value={starPlayerIdxValue} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} />
-                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} />
+                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={playerIdxValue[0]} cardIndex={0} />
+                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={playerIdxValue[1]} cardIndex={1}/>
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} />
-                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} />
+                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={playerIdxValue[2]} cardIndex={2}/>
+                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={playerIdxValue[3]} cardIndex={3}/>
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={choosenPlayer} index={valueIndex}/>
+                    <Stats players={cards} playerRoleIdx={playerIdxValue} starPlayerIdx={starPlayerIdxValue} starPlayer={starPlayer} team={choosenPlayer} />
                 </div>  
             </div>
             </div> 

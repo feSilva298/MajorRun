@@ -1,32 +1,19 @@
 "use client"    
 
 import { Player } from "@/lib/types/team"
-import { useState } from "react"
 import { ArrowLeftRight } from "lucide-react";
 
 type Props = {
-    player?: Player | null;
+    player?: Player | null
     handleClick?: () => boolean
+    SwitchRole?: (index:number) => void
+    value: number
+    cardIndex: number
 }
 
-export default function CardPlayers({player, handleClick}: Props){
-    const [value, setValue] = useState(0)
-    const [active, setActive] = useState(false)
 
-    function SwitchRole(index:number) {
-        if(player?.rolesAllowed.length === 1) return;
-
-        if(active){
-            setValue(value - 1)
-        }
-        else{
-            setValue(value + 1)
-        }
-
-        setActive(!active)
-
-        return player?.rolesAllowed[index]
-    }
+export default function CardPlayers({player, handleClick, SwitchRole, value, cardIndex}: Props){
+ 
 
     if(player){
         return(
@@ -37,11 +24,11 @@ export default function CardPlayers({player, handleClick}: Props){
             </div>
 
             {player?.rolesAllowed.length === 1 ? <div className="flex justify-end p-6 items-baseline space-x-4">
-                    <p className="text-[#EDEDED] text-xl">{player?.rolesAllowed[0]}</p>
+                    <p className="text-[#EDEDED] text-xl">{player?.defaultRole}</p>
                 <p className="font-bold text-4xl text-[#EDEDED]">{player?.overall}</p>
             </div> : <div className="flex justify-end p-6 items-baseline space-x-4">
                 <div className="flex gap-2">
-                    <button onClick={() => SwitchRole(value)}>
+                    <button onClick={() => SwitchRole?.(cardIndex)}>
                         <ArrowLeftRight className="w-5 h-5 text-[#ededed]"/>
                     </button>
                     <p className="text-[#EDEDED] text-xl">{player?.rolesAllowed[value]}</p>
