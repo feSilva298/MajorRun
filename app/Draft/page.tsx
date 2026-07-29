@@ -15,75 +15,75 @@ export default function Draft(){
 
 const [draftedTeams, setDraftedTeams] = useState<Team[]>([]);
 const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-const [starPlayer, setStarPlayer] = useState<Player | null>(null);
-const [cards, setCards] = useState<(Player | null)[]>([null,null,null,null]);
-const [rounds, setRounds] = useState(1)
-const [countReroll, setCountReroll] = useState(0)
-const [removeTeam, setRemoveTeam] = useState<Team[]>(json)
-const [choosenPlayer, setChoosenPlayer] = useState<(Player | null)[]>([])
-const [starPlayerIdxValue, setStarPlayerIdxValue] = useState(0)
-const [playerIdxValue, setPlayerIdxValue] = useState([0,0,0,0])
+const [rounds, setRounds] = useState(1);
+const [team, setTeam] = useState<(Player | null)[]>([null,null,null,null,null]);
+const [countReroll, setCountReroll] = useState(0);
+const [removeTeam, setRemoveTeam] = useState<Team[]>(json);
+const [roleValue, setRoleValue] = useState([0,0,0,0,0]);
 
 
 //functions Players ---------------------------------------------------------------------------------
-function placePlayer(index: number): boolean {
+function placePlayer(slotIndex: number) {
     if (!selectedPlayer) return false;
-    if (cards[index]) return false;
+    if (team[slotIndex]) return false;
 
-    const newCards = [...cards];                                                
-    newCards[index] = selectedPlayer;
-    setCards(newCards);
+    const next = [...team];
+    next[slotIndex] = selectedPlayer;
+
+    setTeam(next);
 
     setSelectedPlayer(null);
-    setChoosenPlayer((previous) =>[...previous, newCards[index]])
     setRounds(prev => prev + 1);
-    setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
+
+    setRemoveTeam(prev =>
+        prev.filter(team =>
+            !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)
+        )
+    );
 
     return true;
 }
 
-function switchRolePlayer(cardIndex: number) {
-    if (!cards[cardIndex]) return;
-    if (cards[cardIndex]!.rolesAllowed.length === 1) return;
+function switchRolePlayer(index: number) {
+    if(!team[index]) return;
+    if(team[index].rolesAllowed.length === 1) return;
 
-    setPlayerIdxValue(prev => {
+    setRoleValue(prev=>{
         const next = [...prev];
 
-        next[cardIndex] =
-            next[cardIndex] === cards[cardIndex]!.rolesAllowed.length - 1
-                ? 0
-                : next[cardIndex] + 1;
+        next[index] = next[index] === 0 ? 1 : 0;
 
         return next;
     });
 }
 //-------------------------------------------------------------------------------------------------
 
+function analysesRoles(){
+  
 
+    //if(choosenPlayer[0]?.rolesAllowed[playerIdxValue[0]] === choosenPlayer[1]?.rolesAllowed[playerIdxValue[1]]){
+    //    console.log("tem role igual");
+    //}
+    //else{
+    //    console.log("nao tem role igual");
+   // }
 
-//functions Star Player ---------------------------------------------------------------------------
-function placeStarPlayer(): boolean {
-    if (!selectedPlayer) return false;
-    if (starPlayer) return false;
-    
-    setStarPlayer(selectedPlayer);
-    setChoosenPlayer([...choosenPlayer, selectedPlayer])
-    setSelectedPlayer(null);
-    setRounds(prev => prev + 1);
-    setRemoveTeam(prev => prev.filter(team => !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)))
-
-    return true;
+    return team.filter((player, index, array) => {
+        return array.some(
+            (comparePlayer,compareIdx) => {
+                const igual = index !== compareIdx && player?.rolesAllowed[0] === comparePlayer?.rolesAllowed[0]
+                if(igual){
+                    console.log("tem role igual aqui ein")
+                }
+                else{
+                    console.log("nao tem role igual")
+                }
+                return igual
+        });
+    });    
 }
 
-function SwitchRoleStarPlayer(index:number) {
-        if(!starPlayer) return
-        if(starPlayer?.rolesAllowed.length === 1) return;
-
-        setStarPlayerIdxValue((prev) => prev === 0 ? 1 : 0)
-
-        return index
-    }
-//----------------------------------------------------------------------------------------------
+console.log(analysesRoles())
 
     useEffect(() => { 
         // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -115,19 +115,19 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRoleStarPlayer} value={starPlayerIdxValue} />
+                        <StarPlayer starPlayer={team[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0} />
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={playerIdxValue[0]} cardIndex={0} />
-                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={playerIdxValue[1]} cardIndex={1} />
+                        <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
+                        <CardPlayers player={team[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={roleValue[2]} cardIndex={2}/>
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={playerIdxValue[2]} cardIndex={2}/>
-                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={playerIdxValue[3]} cardIndex={3} />
+                        <CardPlayers player={team[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={roleValue[3]} cardIndex={3}/>
+                        <CardPlayers player={team[4]} handleClick={() => placePlayer(4)} SwitchRole={switchRolePlayer} value={roleValue[4]} cardIndex={4}/>
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={cards} playerRoleIdx={playerIdxValue} starPlayerIdx={starPlayerIdxValue} starPlayer={starPlayer} team={choosenPlayer} />
+                    <Stats players={team} playerRoleIdx={roleValue} />
                 </div>  
             </div>
             </div>    
@@ -150,19 +150,19 @@ if (draftedTeams.length === 0) {
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={starPlayer} handleClick={placeStarPlayer} SwitchRole={SwitchRoleStarPlayer} value={starPlayerIdxValue} />
+                        <StarPlayer starPlayer={team[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0}/>
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={playerIdxValue[0]} cardIndex={0} />
-                        <CardPlayers player={cards[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={playerIdxValue[1]} cardIndex={1}/>
+                        <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
+                        <CardPlayers player={team[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={roleValue[2]} cardIndex={2}/>
                     </div>
                     <div className="flex gap-6">
-                        <CardPlayers player={cards[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={playerIdxValue[2]} cardIndex={2}/>
-                        <CardPlayers player={cards[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={playerIdxValue[3]} cardIndex={3}/>
+                        <CardPlayers player={team[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={roleValue[3]} cardIndex={3}/>
+                        <CardPlayers player={team[4]} handleClick={() => placePlayer(4)} SwitchRole={switchRolePlayer} value={roleValue[4]} cardIndex={4}/>
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={cards} playerRoleIdx={playerIdxValue} starPlayerIdx={starPlayerIdxValue} starPlayer={starPlayer} team={choosenPlayer} />
+                    <Stats players={team} playerRoleIdx={roleValue} />
                 </div>  
             </div>
             </div> 

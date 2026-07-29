@@ -24,7 +24,7 @@ export default function CardPlayers({player, handleClick, SwitchRole, value, car
             </div>
 
             {player?.rolesAllowed.length === 1 ? <div className="flex justify-end p-6 items-baseline space-x-4">
-                    <p className="text-[#EDEDED] text-xl">{player?.defaultRole}</p>
+                    <p className="text-[#EDEDED] text-xl">{player?.rolesAllowed}</p>
                 <p className="font-bold text-4xl text-[#EDEDED]">{player?.overall}</p>
             </div> : <div className="flex justify-end p-6 items-baseline space-x-4">
                 <div className="flex gap-2">

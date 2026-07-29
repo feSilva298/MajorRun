@@ -8,9 +8,10 @@ type Props = {
     handleClick?: () => boolean
     SwitchRole?: (index: number) => void
     value: number
+    cardIndex: number
 }
 
-export default function StarPlayer({starPlayer, handleClick, SwitchRole, value}: Props){
+export default function StarPlayer({starPlayer, handleClick, SwitchRole, cardIndex, value}: Props){
 
     if(starPlayer){
         return(
@@ -26,11 +27,11 @@ export default function StarPlayer({starPlayer, handleClick, SwitchRole, value}:
             </div>
             
             {starPlayer.rolesAllowed.length === 1 ? <div className="flex justify-end p-6 items-baseline space-x-4">
-                    <p className="text-[#EDEDED] text-xl">{starPlayer?.rolesAllowed[value]}</p>
+                    <p className="text-[#EDEDED] text-xl">{starPlayer?.rolesAllowed}</p>
                     <p className="font-bold text-4xl text-[#EDEDED]">{starPlayer?.overall}</p>
                 </div> : <div className="flex justify-end p-6 items-baseline space-x-4">
                 <div className="flex gap-2">
-                    <button onClick={() => SwitchRole?.(value)}>
+                    <button onClick={() => SwitchRole?.(cardIndex)}>
                         <ArrowLeftRight className="w-5 h-5 text-[#ededed]"/>
                     </button>
                     <p className="text-[#EDEDED] text-xl">{starPlayer?.rolesAllowed[value]}</p>

@@ -2,19 +2,16 @@ import { Player } from "@/lib/types/team"
 
 type Props = {
     players: (Player | null)[]
-    starPlayerIdx: number
     playerRoleIdx: number[]
-    starPlayer: Player | null
-    team: (Player | null)[]
 }
 
-export default function Stats({ players, starPlayerIdx, starPlayer, playerRoleIdx, team}: Props){
+export default function Stats({ players, playerRoleIdx}: Props){
 
     
 
     function averageOverallTeam(){
 
-        const OVL_Players = team.map((item) => item?.overall)
+        const OVL_Players = players.map((item) => item?.overall)
        
         if(OVL_Players.length === 0) return
         const sumPlayers = OVL_Players.reduce((acc, num) => (acc ?? 0) + (num ?? 0), 0);
@@ -40,18 +37,14 @@ export default function Stats({ players, starPlayerIdx, starPlayer, playerRoleId
                 <p className="text-[#ededed] font-semibold">Overall: <span className="text-[#c8a24a] text-xl">{averageOverallTeam()}</span></p>
                 <div className="flex flex-col gap-2">
 
-   {team.map((item, index) => {
+   {players.map((item, index) => {
     if (!item) return null;
-
-    const isStarPlayer = starPlayer?.idPlayer === item.idPlayer;
 
     const cardIndex = players.findIndex(
         card => card?.idPlayer === item.idPlayer
     );
 
-    const role = isStarPlayer
-        ? item.rolesAllowed[starPlayerIdx]
-        : item.rolesAllowed[playerRoleIdx[cardIndex]];
+    const role = item.rolesAllowed[playerRoleIdx[cardIndex]];
 
     return (
         <div
