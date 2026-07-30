@@ -16,7 +16,7 @@ export default function Draft(){
 const [draftedTeams, setDraftedTeams] = useState<Team[]>([]);
 const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 const [rounds, setRounds] = useState(1);
-const [team, setTeam] = useState<(Player | null)[]>([null,null,null,null,null]);
+const [team, setTeam] = useState<(Player | null)[]>([null]);
 const [countReroll, setCountReroll] = useState(0);
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json);
 const [roleValue, setRoleValue] = useState([0,0,0,0,0]);
@@ -27,10 +27,7 @@ function placePlayer(slotIndex: number) {
     if (!selectedPlayer) return false;
     if (team[slotIndex]) return false;
 
-    const next = [...team];
-    next[slotIndex] = selectedPlayer;
-
-    setTeam(next);
+    setTeam((prev) => [...prev, selectedPlayer]);
 
     setSelectedPlayer(null);
     setRounds(prev => prev + 1);
@@ -58,36 +55,45 @@ function switchRolePlayer(index: number) {
 }
 //-------------------------------------------------------------------------------------------------
 
+//function starPlayer------------------------------------------------------------------------------
+function placeStarPlayer() {
+    if (!selectedPlayer) return false;
+
+    setTeam(prev => {
+        const next = [...prev];
+
+        next[0] = selectedPlayer;
+
+        return next;
+    });
+
+    setSelectedPlayer(null);
+
+    return true;
+}
+//--------------------------------------------------------------------------------------------------
+
+
 function analysesRoles(){
-  
+    if(!team) return
 
-    //if(choosenPlayer[0]?.rolesAllowed[playerIdxValue[0]] === choosenPlayer[1]?.rolesAllowed[playerIdxValue[1]]){
-    //    console.log("tem role igual");
-    //}
-    //else{
-    //    console.log("nao tem role igual");
-   // }
+    return team.filter((player, index) => {
+        const role = player?.rolesAllowed[roleValue[index]];
 
-    return team.filter((player, index, array) => {
-        return array.some(
-            (comparePlayer,compareIdx) => {
-                const igual = index !== compareIdx && player?.rolesAllowed[0] === comparePlayer?.rolesAllowed[0]
-                if(igual){
-                    console.log("tem role igual aqui ein")
-                }
-                else{
-                    console.log("nao tem role igual")
-                }
-                return igual
+        return team.some((comparePlayer, compareIndex) => {
+            if (index === compareIndex) return false;
+
+            const compareRole = comparePlayer?.rolesAllowed[roleValue[compareIndex]];
+            console.log(compareRole)
+
+            return role === compareRole;
         });
-    });    
+    });
 }
 
-console.log(analysesRoles())
-
-    useEffect(() => { 
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setDraftedTeams(getRandomTeams(removeTeam));
+useEffect(() => { 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDraftedTeams(getRandomTeams(removeTeam));
 }, [removeTeam]);
 
 if (draftedTeams.length === 0) {
@@ -150,7 +156,7 @@ if (draftedTeams.length === 0) {
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={team[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0}/>
+                        <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0}/>
                     </div>
                     <div className="flex gap-6">
                         <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
