@@ -68,6 +68,11 @@ function placeStarPlayer() {
     });
 
     setSelectedPlayer(null);
+     setRemoveTeam(prev =>
+        prev.filter(team =>
+            !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)
+        )
+    );
 
     return true;
 }
@@ -75,7 +80,7 @@ function placeStarPlayer() {
 
 
 function analysesRoles(){
-    if(!team) return
+    if(!team) return 
 
     return team.filter((player, index) => {
         const role = player?.rolesAllowed[roleValue[index]];
@@ -84,12 +89,13 @@ function analysesRoles(){
             if (index === compareIndex) return false;
 
             const compareRole = comparePlayer?.rolesAllowed[roleValue[compareIndex]];
-            console.log(compareRole)
-
+    
             return role === compareRole;
         });
     });
 }
+
+console.log(analysesRoles()?.length)
 
 useEffect(() => { 
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -133,7 +139,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={team} playerRoleIdx={roleValue} />
+                    <Stats players={team} playerRoleIdx={roleValue} analysesRoles={analysesRoles()} />
                 </div>  
             </div>
             </div>    
@@ -168,7 +174,7 @@ if (draftedTeams.length === 0) {
                     </div>
                 </div>
                 <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
-                    <Stats players={team} playerRoleIdx={roleValue} />
+                    <Stats players={team} playerRoleIdx={roleValue}  analysesRoles={analysesRoles()} />
                 </div>  
             </div>
             </div> 

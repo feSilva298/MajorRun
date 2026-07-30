@@ -3,24 +3,22 @@ import { Player } from "@/lib/types/team"
 type Props = {
     players: (Player | null)[]
     playerRoleIdx: number[]
+    analysesRoles?: (Player | null)[]
 }
 
-export default function Stats({ players, playerRoleIdx}: Props){
-
-    
+export default function Stats({ players, playerRoleIdx, analysesRoles}: Props){
 
     function averageOverallTeam(){
 
-        const OVL_Players = players.map((item) => item?.overall)
+        const OVL_Players = players.map((item) => item?.overall ?? 0)
        
-        if(OVL_Players.length === 0) return
-        const sumPlayers = OVL_Players.reduce((acc, num) => (acc ?? 0) + (num ?? 0), 0);
-
-        if(!sumPlayers) return
+        if(OVL_Players.length === 0) return 0
+        const sumPlayers = OVL_Players.reduce((acc, num) => acc + num, 0);
 
         const average = sumPlayers / 5
-        
-        return average
+        const FinalAverage = average - ((analysesRoles?.length ?? 0) * 3)
+
+        return Number(FinalAverage.toFixed(1))
     }
         
     return(
@@ -34,7 +32,10 @@ export default function Stats({ players, playerRoleIdx}: Props){
             </div>
 
             <div className="flex flex-col gap-12">
-                <p className="text-[#ededed] font-semibold">Overall: <span className="text-[#c8a24a] text-xl">{averageOverallTeam()}</span></p>
+                <div>
+                    <p className="text-[#ededed] font-semibold">Overall: <span className="text-[#c8a24a] text-xl">{averageOverallTeam()}</span></p>
+                    {analysesRoles?.length ? <p className="text-[#a12b2b]">{analysesRoles?.length} jogadores com a mesma posição!</p> : ""}
+                </div>
                 <div className="flex flex-col gap-2">
 
    {players.map((item, index) => {
