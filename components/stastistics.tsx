@@ -21,6 +21,15 @@ export default function Stats({ players, playerRoleIdx, analysesRoles}: Props){
         return Number(FinalAverage.toFixed(1))
     }
         
+    function impactStarPlayer(){
+        if(!players[0]) return
+
+        const starPlayerOVL = players[0]?.overall
+
+        const impact = 65 + (starPlayerOVL - 84) * 2
+
+        return impact
+    }
     return(
         <>
         <div className="flex flex-col justify-center gap-10">
@@ -28,7 +37,7 @@ export default function Stats({ players, playerRoleIdx, analysesRoles}: Props){
 
             <div className="flex flex-col border-[#C8A24A] border-2 gap-4 p-4">
                 <p className="text-xl font-bold text-[#ededed]">Star Player</p> 
-                <p className="text-[#ededed] text-lg">Bonus:</p>
+                <p className="text-[#ededed] text-lg">Chance de impacto: {impactStarPlayer() ? <span className="font-bold text-[#c8a24a]">{impactStarPlayer()}%</span> : ""}</p>
             </div>
 
             <div className="flex flex-col gap-12">

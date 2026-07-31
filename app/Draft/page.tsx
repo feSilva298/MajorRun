@@ -95,8 +95,6 @@ function analysesRoles(){
     });
 }
 
-console.log(analysesRoles()?.length)
-
 useEffect(() => { 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDraftedTeams(getRandomTeams(removeTeam));
