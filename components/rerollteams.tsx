@@ -4,11 +4,12 @@ import { Team } from "@/lib/types/team";
 import { getRandomTeams } from "@/lib/teams";
 
 type Props = {
+    removeTeam: Team[]
     setDraftedTeams: React.Dispatch<React.SetStateAction<Team[]>>
     setCountReroll: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function RerollTeams({setDraftedTeams, setCountReroll}: Props){
+export default function RerollTeams({setDraftedTeams, setCountReroll, removeTeam}: Props){
 
     const count = () => {
         setCountReroll(c => c + 1)
@@ -16,7 +17,7 @@ export default function RerollTeams({setDraftedTeams, setCountReroll}: Props){
 
     function MultiFunctions(){
         count()
-        setDraftedTeams(getRandomTeams)
+        setDraftedTeams(getRandomTeams(removeTeam))
     }
 
     return(

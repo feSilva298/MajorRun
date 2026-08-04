@@ -125,7 +125,7 @@ if (draftedTeams.length === 0) {
                 
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
                     <div>
-                        <StarPlayer starPlayer={team[0]} handleClick={() => placePlayer(0)} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0} />
+                        <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0} />
                     </div>
                     <div className="flex gap-6">
                         <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
@@ -155,7 +155,7 @@ if (draftedTeams.length === 0) {
                 <div className="flex justify-center gap-6">
                 <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6 gap-4">
                    <SelectPlayers  selectedTeams={draftedTeams} onSelectPlayer={setSelectedPlayer} />
-                   {countReroll >= 3 ? "" : <RerollTeams setDraftedTeams={setDraftedTeams} setCountReroll={setCountReroll}  /> }
+                   {countReroll >= 3 ? "" : <RerollTeams removeTeam={removeTeam} setDraftedTeams={setDraftedTeams} setCountReroll={setCountReroll}  /> }
                    
                 </div>
                 <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
