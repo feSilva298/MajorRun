@@ -1,7 +1,16 @@
+"use client"
+
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
+import {randomTeamsTournament} from "@/lib/teams"
+import {useEffect} from "react"
 
 export default function Home(){
+
+    useEffect(() => {
+        randomTeamsTournament();
+    }, [])
+
     return(
         <>
         <div className="flex justify-center items-center h-screen w-screen">
@@ -35,6 +44,8 @@ export default function Home(){
                 </div>
             </div>
         </div>
+
+        
         </>
     )
 }

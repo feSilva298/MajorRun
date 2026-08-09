@@ -1,6 +1,6 @@
 "use client "
 
-import CardPlayers from "@/components/cardPlayers"
+import CardPlayers from "@/components/cardplayers"
 import StarPlayer from "@/components/starplayer"
 import Link from "next/link"
 

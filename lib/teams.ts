@@ -1,4 +1,5 @@
 import { Team } from "./types/team"
+import json from "@/data/teams_with_ids.json"
 
 export function getRandomTeams(teams: Team[]) {
     const index1 = Math.floor(Math.random() * teams.length)
@@ -10,4 +11,40 @@ export function getRandomTeams(teams: Team[]) {
     }
 
     return [teams[index1], teams[index2]]
+}
+
+
+//essa funcao aqui gera os 16 times que vao jogar o torneio
+export function randomTeamsTournament(){
+    const teams:number[] = []
+
+
+    while (teams.length < 16) {
+        const numberTeams = Math.floor(Math.random() * json.length);
+
+        if (!teams.includes(numberTeams)) {
+            teams.push(numberTeams);
+        }
+
+}
+    const teamsTournament = teams.map(index => json[index])
+    return teamsTournament
+}
+
+
+//essa funcao aqui gera os 5 times do torneio que vao jogar contra o jogador
+export function drawTeams(){
+     const teams:number[] = []
+
+
+    while (teams.length < 5) {
+        const drawTeams = Math.floor(Math.random() * randomTeamsTournament().length)
+
+        if (!teams.includes(drawTeams)) {
+            teams.push(drawTeams);
+        }
+
+}
+    const teamsTournament = teams.map(index => json[index])
+    return teamsTournament
 }

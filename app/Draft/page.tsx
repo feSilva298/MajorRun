@@ -1,6 +1,6 @@
 "use client"
 
-import CardPlayers from "@/components/cardPlayers"
+import CardPlayers from "@/components/cardplayers"
 import StarPlayer from "@/components/starplayer"
 import Stats from "@/components/stastistics"
 import SelectPlayers from "@/components/selectplayers"
@@ -68,6 +68,7 @@ function placeStarPlayer() {
     });
 
     setSelectedPlayer(null);
+    setRounds(prev => prev + 1);
      setRemoveTeam(prev =>
         prev.filter(team =>
             !team.players.some(obj => obj.idPlayer === selectedPlayer.idPlayer)

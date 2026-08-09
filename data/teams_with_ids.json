@@ -57,7 +57,8 @@
         "teamYear": 2015
       }
     ],
-    "idTeam": "Fnatic-2015"
+    "idTeam": "Fnatic-2015",
+    "overall": 92.4
   },
   {
     "team": "Luminosity",
@@ -118,7 +119,8 @@
         "teamYear": 2016
       }
     ],
-    "idTeam": "Luminosity-2016"
+    "idTeam": "Luminosity-2016",
+    "overall": 93.4
   },
   {
     "team": "SK Gaming",
@@ -179,7 +181,8 @@
         "teamYear": 2017
       }
     ],
-    "idTeam": "SK Gaming-2017"
+    "idTeam": "SK Gaming-2017",
+    "overall": 92
   },
   {
     "team": "Astralis",
@@ -237,7 +240,8 @@
         "teamYear": 2019
       }
     ],
-    "idTeam": "Astralis-2019"
+    "idTeam": "Astralis-2019",
+    "overall": 94.6
   },
   {
     "team": "NAVI",
@@ -295,7 +299,8 @@
         "teamYear": 2021
       }
     ],
-    "idTeam": "NAVI-2021"
+    "idTeam": "NAVI-2021",
+    "overall": 93
   },
   {
     "team": "FaZe",
@@ -354,7 +359,8 @@
         "teamYear": 2022
       }
     ],
-    "idTeam": "FaZe-2022"
+    "idTeam": "FaZe-2022",
+    "overall": 93
   },
   {
     "team": "G2",
@@ -413,7 +419,8 @@
         "teamYear": 2023
       }
     ],
-    "idTeam": "G2-2023"
+    "idTeam": "G2-2023",
+    "overall": 91.4
   },
   {
     "team": "Virtus.pro",
@@ -472,7 +479,8 @@
         "teamYear": 2014
       }
     ],
-    "idTeam": "Virtus.pro-2014"
+    "idTeam": "Virtus.pro-2014",
+    "overall": 93
   },
   {
     "team": "Liquid",
@@ -532,7 +540,8 @@
         "teamYear": 2019
       }
     ],
-    "idTeam": "Liquid-2019"
+    "idTeam": "Liquid-2019",
+    "overall": 91.4
   },
   {
     "team": "mibr",
@@ -591,7 +600,8 @@
         "teamYear": 2006
       }
     ],
-    "idTeam": "mibr-2006"
+    "idTeam": "mibr-2006",
+    "overall": 90.2
   },
   {
     "team": "Immortals",
@@ -651,7 +661,8 @@
         "teamYear": 2017
       }
     ],
-    "idTeam": "Immortals-2017"
+    "idTeam": "Immortals-2017",
+    "overall": 89.4
   },
   {
     "team": "NAVI",
@@ -709,7 +720,8 @@
         "teamYear": 2010
       }
     ],
-    "idTeam": "NAVI-2010"
+    "idTeam": "NAVI-2010",
+    "overall": 91.4
   },
   {
     "team": "EnVyUs",
@@ -768,7 +780,8 @@
         "teamYear": 2015
       }
     ],
-    "idTeam": "EnVyUs-2015"
+    "idTeam": "EnVyUs-2015",
+    "overall": 92
   },
   {
     "team": "Cloud9",
@@ -827,7 +840,8 @@
         "teamYear": 2018
       }
     ],
-    "idTeam": "Cloud9-2018"
+    "idTeam": "Cloud9-2018",
+    "overall": 90
   },
   {
     "team": "Gambit",
@@ -885,7 +899,8 @@
         "teamYear": 2017
       }
     ],
-    "idTeam": "Gambit-2017"
+    "idTeam": "Gambit-2017",
+    "overall": 89.6
   },
   {
     "team": "Vitality",
@@ -944,7 +959,8 @@
         "teamYear": 2023
       }
     ],
-    "idTeam": "Vitality-2023"
+    "idTeam": "Vitality-2023",
+    "overall": 92.2
   },
   {
     "team": "NAVI",
@@ -1003,7 +1019,8 @@
         "teamYear": 2024
       }
     ],
-    "idTeam": "NAVI-2024"
+    "idTeam": "NAVI-2024",
+    "overall": 90.4
   },
   {
     "team": "Ninjas in Pyjamas",
@@ -1062,7 +1079,8 @@
         "teamYear": 2015
       }
     ],
-    "idTeam": "Ninjas in Pyjamas-2015"
+    "idTeam": "Ninjas in Pyjamas-2015",
+    "overall": 92.4
   },
   {
     "team": "FaZe",
@@ -1122,7 +1140,8 @@
         "teamYear": 2017
       }
     ],
-    "idTeam": "FaZe-2017"
+    "idTeam": "FaZe-2017",
+    "overall": 94
   },
   {
     "team": "FURIA",
@@ -1183,7 +1202,8 @@
         "teamYear": 2025
       }
     ],
-    "idTeam": "FURIA-2025"
+    "idTeam": "FURIA-2025",
+    "overall": 92
   },
   {
     "team": "LDLC",
@@ -1243,7 +1263,8 @@
         "teamYear": 2014
       }
     ],
-    "idTeam": "LDLC-2014"
+    "idTeam": "LDLC-2014",
+    "overall": 91.2
   },
   {
     "team": "VeryGames",
@@ -1302,7 +1323,8 @@
         "teamYear": 2013
       }
     ],
-    "idTeam": "VeryGames-2013"
+    "idTeam": "VeryGames-2013",
+    "overall": 90.6
   },
   {
     "team": "Titan",
@@ -1361,7 +1383,8 @@
         "teamYear": 2014
       }
     ],
-    "idTeam": "Titan-2014"
+    "idTeam": "Titan-2014",
+    "overall": 89.6
   },
   {
     "team": "HellRaisers",
@@ -1419,7 +1442,8 @@
         "teamYear": 2014
       }
     ],
-    "idTeam": "HellRaisers-2014"
+    "idTeam": "HellRaisers-2014",
+    "overall": 88
   },
   {
     "team": "ENCE",
@@ -1477,7 +1501,8 @@
         "teamYear": 2019
       }
     ],
-    "idTeam": "ENCE-2019"
+    "idTeam": "ENCE-2019",
+    "overall": 88
   },
   {
     "team": "OpTic Gaming",
@@ -1536,7 +1561,8 @@
         "teamYear": 2016
       }
     ],
-    "idTeam": "OpTic Gaming-2016"
+    "idTeam": "OpTic Gaming-2016",
+    "overall": 88.2
   },
   {
     "team": "NAVI",
@@ -1596,7 +1622,8 @@
         "teamYear": 2016
       }
     ],
-    "idTeam": "NAVI-2016"
+    "idTeam": "NAVI-2016",
+    "overall": 91.6
   },
   {
     "team": "Liquid",
@@ -1657,6 +1684,7 @@
         "teamYear": 2016
       }
     ],
-    "idTeam": "Liquid-2016"
+    "idTeam": "Liquid-2016",
+    "overall": 89.4
   }
 ]
