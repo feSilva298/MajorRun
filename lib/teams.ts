@@ -35,10 +35,11 @@ export function randomTeamsTournament(){
 //essa funcao aqui gera os 5 times do torneio que vao jogar contra o jogador
 export function drawTeams(){
      const teams:number[] = []
+     const randomTeams= randomTeamsTournament()
 
 
     while (teams.length < 5) {
-        const drawTeams = Math.floor(Math.random() * randomTeamsTournament().length)
+        const drawTeams = Math.floor(Math.random() * randomTeams.length)
 
         if (!teams.includes(drawTeams)) {
             teams.push(drawTeams);
@@ -46,5 +47,8 @@ export function drawTeams(){
 
 }
     const teamsTournament = teams.map(index => json[index])
+    console.log(teamsTournament)
     return teamsTournament
 }
+
+console.log(drawTeams())

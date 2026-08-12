@@ -3,14 +3,13 @@
 import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
 import CountUp from "react-countup"
-import { randomTeamsTournament, drawTeams } from "@/lib/teams"
-import { useState, useEffect } from "react"
 import { Team } from "@/lib/types/team"
 
-export default function CardSimulation() {
-
-    const [teams, setTeams] = useState<Team[]>()
-
+type Props = {
+    teams: Team[]
+}
+export default function CardSimulation({teams}: Props) {
+    
     return(
         <>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }} className="w-[910px] h-[300px] bg-[#0b0b0f]">
@@ -20,10 +19,10 @@ export default function CardSimulation() {
                         <p className="text-[#ededed] text-xs">0-0</p>
                     </div>
                     <Separator orientation="vertical" className="bg-[#0b0b0f]"/>
-                    <div className="flex min-w-3xl justify-center xl:gap-109">
+                    <div className="flex min-w-3xl justify-between">
                         <div className="flex gap-2">
                             <p className="text-xs text-[#ededed] font-light">vs</p>
-                            <p className="text-4xl text-[#ededed] font-bold">{}</p>
+                            <p className="text-4xl text-[#ededed] font-bold">{teams[1]?.team}</p>   
                         </div>
                         <div className="flex items-center gap-4">
                             <p className="text-xs text-[#ededed] font-light">bo1</p>
