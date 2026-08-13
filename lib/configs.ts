@@ -59,6 +59,8 @@ export function drawMaps(){
 
 export function resultDuel(teams: Team[]){
     const OVLdrawTeams = teams.map((teams) => teams.overall)
+
+    
     return OVLdrawTeams
 }
 
