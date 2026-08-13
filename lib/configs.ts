@@ -33,22 +33,32 @@ export function randomTeamsTournament(){
 
 
 //essa funcao aqui gera os 5 times do torneio que vao jogar contra o jogador
-export function drawTeams(){
+export function drawTeams(selectedTeams: Team[]){
      const teams:number[] = []
-     const randomTeams= randomTeamsTournament()
-
 
     while (teams.length < 5) {
-        const drawTeams = Math.floor(Math.random() * randomTeams.length)
+        const drawTeams = Math.floor(Math.random() * selectedTeams.length)
 
         if (!teams.includes(drawTeams)) {
             teams.push(drawTeams);
         }
 
 }
-    const teamsTournament = teams.map(index => json[index])
-    console.log(teamsTournament)
+    const teamsTournament = teams.map(index => selectedTeams[index])
+    
     return teamsTournament
 }
 
-console.log(drawTeams())
+export function drawMaps(){
+        const maps = ["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"]
+
+        const drawMaps = Math.floor(Math.random() * maps.length)
+        return maps[drawMaps]
+    
+}
+
+export function resultDuel(teams: Team[]){
+    const OVLdrawTeams = teams.map((teams) => teams.overall)
+    return OVLdrawTeams
+}
+

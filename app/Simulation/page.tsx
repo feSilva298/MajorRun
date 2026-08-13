@@ -2,18 +2,25 @@
 
 import CardSimulation from "@/components/cardsimulation"
 import Resume from "@/components/resume"
-import { randomTeamsTournament, drawTeams } from "@/lib/teams"
+import { randomTeamsTournament, drawTeams,  drawMaps, resultDuel } from "@/lib/configs"
 import { useState, useEffect } from "react"
 import { Team } from "@/lib/types/team"
 
 export default function Simulation(){
 
     const [teams, setTeams] = useState<Team[]>([])
-    const [maps, setMaps] = useState(["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"])
-
+    
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setTeams(drawTeams())
+    const tournamentTeams = randomTeamsTournament()
+    const drawnTeams = drawTeams(tournamentTeams)
+    const results = resultDuel(drawnTeams)
+
+    console.log("16 TIMES:", tournamentTeams)
+    console.log("5 TIMES:", drawnTeams)
+    console.log("OVERALLS:", results)
+
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTeams(drawnTeams)
     },[])
 
 

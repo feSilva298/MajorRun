@@ -11,8 +11,8 @@ export interface Player {
   defaultRole: string;
   rolesAllowed: string[];
   idPlayer: string;
-  description?: string
-  teamYear: number
+  description?: string;
+  teamYear: number;
 }
 
 export interface Team {
@@ -20,4 +20,5 @@ export interface Team {
   year: number;
   players: Player[];
   idTeam: string;
+  overall: number;
 }

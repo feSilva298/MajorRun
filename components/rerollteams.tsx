@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import {RotateCcw} from "lucide-react"
 import { Team } from "@/lib/types/team";
-import { getRandomTeams } from "@/lib/teams";
+import { getRandomTeams } from "@/lib/configs";
 
 type Props = {
     removeTeam: Team[]
