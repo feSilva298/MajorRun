@@ -2,7 +2,7 @@
 
 import CardSimulation from "@/components/cardsimulation"
 import Resume from "@/components/resume"
-import { randomTeamsTournament, drawTeams,  drawMaps, resultDuel } from "@/lib/configs"
+import { randomTeamsTournament, drawTeams,  drawMaps, resultTeamA } from "@/lib/configs"
 import { useState, useEffect } from "react"
 import { Team } from "@/lib/types/team"
 
@@ -14,7 +14,7 @@ export default function Simulation(){
     useEffect(() => {
     const tournamentTeams = randomTeamsTournament()
     const drawnTeams = drawTeams(tournamentTeams)
-    const results = resultDuel(drawnTeams)
+    const results = resultTeamA(drawnTeams)
 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setTeams(drawnTeams)

@@ -10,7 +10,7 @@ export default function Stats({ players, playerRoleIdx, analysesRoles}: Props){
 
     function averageOverallTeam(){
 
-        const OVL_Players = players.map((item) => item?.overall ?? 0)
+        const OVL_Players = players.map(item => item?.overall ?? 0)
        
         if(OVL_Players.length === 0) return 0
         const sumPlayers = OVL_Players.reduce((acc, num) => acc + num, 0);

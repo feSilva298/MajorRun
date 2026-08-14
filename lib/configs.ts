@@ -1,4 +1,4 @@
-import { Team } from "./types/team"
+import { Team, Player } from "./types/team"
 import json from "@/data/teams_with_ids.json"
 
 export function getRandomTeams(teams: Team[]) {
@@ -57,10 +57,19 @@ export function drawMaps(){
     
 }
 
-export function resultDuel(teams: Team[]){
-    const OVLdrawTeams = teams.map((teams) => teams.overall)
-
+// escuta oq eu estou te falando, isso vai retornar uma lista de numeros, pois eu preciso fazer um .map pra pegar o overall de cada time e dividi-los por 10, sendo esse valor exponte de e(numero de Euler)
+export function resultTeamA(team: Team[]): number[]{
+    const OVLdrawTeams = team.map(teams => teams.overall);
+    const strengthA = OVLdrawTeams.map((value) => Number(Math.exp(value/10).toFixed(2)));
     
-    return OVLdrawTeams
+    return strengthA
+}
+
+export function resultTeamB(team: (Player | null)[] ){ 
+    const OVLteamB = team.map(player => player?.overall ?? 0);
+    const sumPlayers = OVLteamB.reduce((acc, num) => acc + num, 0);
+    const strengthB = Math.exp(sumPlayers/10);
+
+    return strengthB
 }
 
