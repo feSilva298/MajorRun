@@ -2,21 +2,21 @@ import { Team, Player } from "./types/team"
 import json from "@/data/teams_with_ids.json"
 
 export function getRandomTeams(teams: Team[]) {
-    const index1 = Math.floor(Math.random() * teams.length)
+    const index1 = Math.floor(Math.random() * teams.length);
 
-    let index2 = Math.floor(Math.random() * teams.length)
+    let index2 = Math.floor(Math.random() * teams.length);
 
     while(index1 === index2){
-        index2 = Math.floor(Math.random() * teams.length)
+        index2 = Math.floor(Math.random() * teams.length);
     }
 
-    return [teams[index1], teams[index2]]
+    return [teams[index1], teams[index2]];
 }
 
 
-//essa funcao aqui gera os 16 times que vao jogar o torneio
+//this function generates 16 teams of tournament
 export function randomTeamsTournament(){
-    const teams:number[] = []
+    const teams:number[] = [];
 
 
     while (teams.length < 16) {
@@ -27,14 +27,14 @@ export function randomTeamsTournament(){
         }
 
 }
-    const teamsTournament = teams.map(index => json[index])
-    return teamsTournament
+    const teamsTournament = teams.map(index => json[index]);
+    return teamsTournament;
 }
 
 
-//essa funcao aqui gera os 5 times do torneio que vao jogar contra o jogador
+//this function generates 5 teams possible to play against
 export function drawTeams(selectedTeams: Team[]){
-     const teams:number[] = []
+    const teams:number[] = [];
 
     while (teams.length < 5) {
         const drawTeams = Math.floor(Math.random() * selectedTeams.length)
@@ -44,32 +44,49 @@ export function drawTeams(selectedTeams: Team[]){
         }
 
 }
-    const teamsTournament = teams.map(index => selectedTeams[index])
+    const teamsTournament = teams.map(index => selectedTeams[index]);
     
-    return teamsTournament
+    return teamsTournament;
 }
+
 
 export function drawMaps(){
-        const maps = ["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"]
+    const maps = ["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"];
+    const drawMaps = Math.floor(Math.random() * maps.length);
 
-        const drawMaps = Math.floor(Math.random() * maps.length)
-        return maps[drawMaps]
+    return maps[drawMaps];
     
 }
 
-// escuta oq eu estou te falando, isso vai retornar uma lista de numeros, pois eu preciso fazer um .map pra pegar o overall de cada time e dividi-los por 10, sendo esse valor exponte de e(numero de Euler)
+//enemys approaching
 export function resultTeamA(team: Team[]): number[]{
     const OVLdrawTeams = team.map(teams => teams.overall);
     const strengthA = OVLdrawTeams.map((value) => Number(Math.exp(value/10).toFixed(2)));
-    
-    return strengthA
+
+    return strengthA;
 }
 
-export function resultTeamB(team: (Player | null)[] ){ 
+
+//dream team
+export function resultTeamB(team: (Player | null)[]){
     const OVLteamB = team.map(player => player?.overall ?? 0);
     const sumPlayers = OVLteamB.reduce((acc, num) => acc + num, 0);
     const strengthB = Math.exp(sumPlayers/10);
 
-    return strengthB
+    return strengthB;
 }
+
+export function resultFinal(teamA: number[], teamB: number){
+    const chanceA = teamA.map(valueA => Number((valueA/(valueA + teamB)).toFixed(2)))
+    const chanceB = teamA.map(valueA => Number((teamB/(valueA + teamB)).toFixed(2)))
+
+    const difference = chanceA.map((valueA, index) => Math.abs(valueA - chanceB[index]))
+       
+    const resultFinal = difference.map(value =>{
+        if(value <= 0.10){
+            
+        }
+    })
+}
+
 
