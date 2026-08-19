@@ -76,7 +76,28 @@ export function resultTeamB(team: (Player | null)[]){
     return strengthB;
 }
 
-export function resultFinal(teamA: number[], teamB: number){
+export function starPlayerTeamB(player: (Player | null)[]){
+    if(!player[0]) return
+
+        const starPlayerOVL = player[0]?.overall
+
+        const impactTeamB = 65 + (starPlayerOVL - 84) * 2
+
+        return impactTeamB
+}
+
+export function starPlayerTeamA(player: Team[]){
+    if(!player) return
+
+        const overall = player.map(OVL => OVL.overall)
+        const starPlayerOVL = Math.max(...overall)
+
+        const impactTeamA = 65 + (starPlayerOVL - 84) * 2
+
+        return impactTeamA
+}
+
+export function resultFinal(teamA: number[], teamB: number, starPlayer: (Player | null)[]){
     const chanceA = teamA.map(valueA => Number((valueA/(valueA + teamB)).toFixed(2)))
     const chanceB = teamA.map(valueA => Number((teamB/(valueA + teamB)).toFixed(2)))
 
@@ -88,5 +109,7 @@ export function resultFinal(teamA: number[], teamB: number){
         }
     })
 }
+
+
 
 

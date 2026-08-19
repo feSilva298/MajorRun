@@ -6,7 +6,7 @@ import Stats from "@/components/stastistics"
 import SelectPlayers from "@/components/selectplayers"
 import RerollTeams from "@/components/rerollteams"
 import Link from "next/link"
-import { getRandomTeams, resultTeamB } from "@/lib/configs"
+import { getRandomTeams, resultTeamB, starPlayerTeamB } from "@/lib/configs"
 import { Player, Team } from "@/lib/types/team"
 import { useState, useEffect } from "react"
 import json from "@/data/teams_with_ids.json"
@@ -77,6 +77,7 @@ function placeStarPlayer() {
 
     return true;
 }
+
 //--------------------------------------------------------------------------------------------------
 
 
@@ -97,6 +98,7 @@ function analysesRoles(){
 }
 
 resultTeamB(team)
+starPlayerTeamB(team)
 
 useEffect(() => { 
     // eslint-disable-next-line react-hooks/set-state-in-effect
