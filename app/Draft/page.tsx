@@ -10,6 +10,7 @@ import { getRandomTeams, resultTeamB, starPlayerTeamB } from "@/lib/configs"
 import { Player, Team } from "@/lib/types/team"
 import { useState, useEffect } from "react"
 import json from "@/data/teams_with_ids.json"
+import { useSimulationStore } from "@/lib/store"
 
 export default function Draft(){
 
@@ -20,7 +21,7 @@ const [team, setTeam] = useState<(Player | null)[]>([null]);
 const [countReroll, setCountReroll] = useState(0);
 const [removeTeam, setRemoveTeam] = useState<Team[]>(json);
 const [roleValue, setRoleValue] = useState([0,0,0,0,0]);
-
+const setDreamTeam = useSimulationStore(state => state.setDreamTeam)
 
 //functions Players ---------------------------------------------------------------------------------
 function placePlayer(slotIndex: number) {
@@ -97,9 +98,6 @@ function analysesRoles(){
     });
 }
 
-resultTeamB(team)
-starPlayerTeamB(team)
-
 useEffect(() => { 
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDraftedTeams(getRandomTeams(removeTeam));
@@ -123,7 +121,7 @@ if (draftedTeams.length === 0) {
                 <div className="flex justify-center gap-6">
                 
                     <div className="flex bg-[#1C1C22] w-[350px] h-[750px] p-6 justify-center">
-                        <Link href="/Simulation" className="h-fit hover:bg-[#c8a24a] transition-all duration-200">
+                        <Link href="/Simulation" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="h-fit hover:bg-[#c8a24a] transition-all duration-200">
                             <button className="w-[300px] text-[#ededed] text-4xl font-bold border-[#c8a24a] border-2 p-6">Começar</button>
                         </Link>
                     </div>

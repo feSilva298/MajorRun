@@ -32,22 +32,22 @@ export function randomTeamsTournament(){
 }
 
 
-//this function generates 5 teams possible to play against
-export function drawTeams(selectedTeams: Team[]){
-    const teams:number[] = [];
+    //this function generates 5 teams(Team A) possible to play against
+    export function drawTeams(selectedTeams: Team[]){
+        const teams:number[] = [];
 
-    while (teams.length < 5) {
-        const drawTeams = Math.floor(Math.random() * selectedTeams.length)
+        while (teams.length < 5) {
+            const drawTeams = Math.floor(Math.random() * selectedTeams.length)
 
-        if (!teams.includes(drawTeams)) {
-            teams.push(drawTeams);
-        }
+            if (!teams.includes(drawTeams)) {
+                teams.push(drawTeams);
+            }
 
-}
-    const teamsTournament = teams.map(index => selectedTeams[index]);
-    
-    return teamsTournament;
-}
+    }
+        const teamsTournament = teams.map(index => selectedTeams[index]);
+        
+        return teamsTournament;
+    }
 
 
 export function drawMaps(){
@@ -58,20 +58,15 @@ export function drawMaps(){
     
 }
 
-//enemys approaching
-export function resultTeamA(team: Team[]): number[]{
-    const OVLdrawTeams = team.map(teams => teams.overall);
-    const strengthA = OVLdrawTeams.map((value) => Number(Math.exp(value/10).toFixed(2)));
 
-    return strengthA;
-}
 
 
 //dream team
 export function resultTeamB(team: (Player | null)[]){
     const OVLteamB = team.map(player => player?.overall ?? 0);
     const sumPlayers = OVLteamB.reduce((acc, num) => acc + num, 0);
-    const strengthB = Math.exp(sumPlayers/10);
+    const average = sumPlayers / 5
+    const strengthB = Math.exp(average/10);
 
     return strengthB;
 }
@@ -86,6 +81,14 @@ export function starPlayerTeamB(player: (Player | null)[]){
         return impactTeamB
 }
 
+//enemys approaching
+export function resultTeamA(team: Team[]): number[]{
+    const OVLdrawTeams = team.map(teams => teams.overall);
+    const strengthA = OVLdrawTeams.map((value) => Number(Math.exp(value/10).toFixed(2)));
+
+    return strengthA;
+}
+
 export function starPlayerTeamA(player: Team[]){
     if(!player) return
 
@@ -97,17 +100,61 @@ export function starPlayerTeamA(player: Team[]){
         return impactTeamA
 }
 
-export function resultFinal(teamA: number[], teamB: number, starPlayer: (Player | null)[]){
-    const chanceA = teamA.map(valueA => Number((valueA/(valueA + teamB)).toFixed(2)))
-    const chanceB = teamA.map(valueA => Number((teamB/(valueA + teamB)).toFixed(2)))
+export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player | null)[], strengthB: number){
+    const chanceA = strengthA.map(valueA => Number((valueA/(valueA + strengthB)).toFixed(2)))
+    const chanceB = strengthA.map(valueA => Number((strengthB/(valueA + strengthB)).toFixed(2)))
+
 
     const difference = chanceA.map((valueA, index) => Math.abs(valueA - chanceB[index]))
        
-    const resultFinal = difference.map(value =>{
-        if(value <= 0.10){
-            
+    const resultFinal = difference.map((value, index) =>{
+
+       
+        let finalChanceA = chanceA[index]
+        let finalChanceB = chanceB[index]
+
+        // Partida acirrada
+        if (value <= 0.10) {
+
+            const impactA = starPlayerTeamA(teamA)
+            const impactB = starPlayerTeamB(teamB)
+
+            const activateA =
+                Math.random() < ((impactA ?? 0) / 100)
+
+            const activateB =
+                Math.random() < ((impactB ?? 0) / 100)
+
+            if (activateA && !activateB) {
+                finalChanceA += 0.05
+                finalChanceB -= 0.05
+            }
+
+            if (activateB && !activateA) {
+                finalChanceA -= 0.05
+                finalChanceB += 0.05
+            }
+        }
+
+        let scoreA = 0
+        let scoreB = 0
+
+        while (scoreA < 13 && scoreB < 13) {
+
+            if (Math.random() < finalChanceA) {
+                scoreA++
+            } else {
+                scoreB++
+            }
+        }
+
+        return {
+            scoreA,
+            scoreB
         }
     })
+
+    return resultFinal
 }
 
 
