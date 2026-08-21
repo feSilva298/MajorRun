@@ -11,6 +11,7 @@ type Props = {
     teams: Team[]
     results: { scoreA: number; scoreB: number }[]
 }
+
 export default function CardSimulation({teams, results}: Props) {
     
     const [map, setMap] = useState<string>()
@@ -18,10 +19,10 @@ export default function CardSimulation({teams, results}: Props) {
     console.log(results)
 
 
-    useEffect(() =>{
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setMap(drawMaps)
-    },[])
+useEffect(() =>{
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMap(drawMaps)
+},[])
 
     return(
         <>
@@ -39,7 +40,7 @@ export default function CardSimulation({teams, results}: Props) {
                         </div>
                         <div className="flex items-center gap-4">
                             <p className="text-xs text-[#ededed] font-light">bo1</p>
-                            <p className="text-[#5CB85C] font-bold text-3xl"><CountUp key={`scoreA-${results[0]?.scoreA}-${results[0]?.scoreB}`} end={results[0]?.scoreA ?? 0} start={0} duration={3}></CountUp> - <CountUp end={results[1]?.scoreB ?? 0} start={0} duration={3}></CountUp></p>
+                            <p className="text-[#5CB85C] font-bold text-3xl"><CountUp key={`scoreA-${results[0]?.scoreA}-${results[0]?.scoreB}`} end={results[0]?.scoreA ?? 0} start={0} duration={3}></CountUp> - <CountUp end={results[0]?.scoreB ?? 0} start={0} duration={3}></CountUp></p>
                         </div>
                     </div>
                 </div>
