@@ -22,3 +22,20 @@ export interface Team {
   idTeam: string;
   overall: number;
 }
+
+export type CampaignMatch = {
+    scoreA: number
+    scoreB: number
+    won: boolean
+    winsBefore: number
+    lossesBefore: number
+    winsAfter: number
+    lossesAfter: number
+}
+
+export type CampaignResult = {
+    matches: CampaignMatch[]
+    wins: number
+    losses: number
+    status: "qualified" | "eliminated"
+}

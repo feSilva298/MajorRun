@@ -1,4 +1,4 @@
-import { Team, Player } from "./types/team"
+import { Team, Player, CampaignMatch, CampaignResult } from "./types/team"
 import json from "@/data/teams_with_ids.json"
 
 export function getRandomTeams(teams: Team[]) {
@@ -52,10 +52,17 @@ export function randomTeamsTournament(){
 
 export function drawMaps(){
     const maps = ["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"];
-    const drawMaps = Math.floor(Math.random() * maps.length);
+    const selectedMaps:number[] = [];
 
-    return maps[drawMaps];
-    
+    while(selectedMaps.length < 7){
+        const drawMaps = Math.floor(Math.random() * maps.length);
+
+        selectedMaps.push(drawMaps)
+    }
+
+    const maps7 = selectedMaps.map(index => maps[index]);
+
+    return maps7
 }
 
 
@@ -104,12 +111,10 @@ export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player |
     const chanceA = strengthA.map(valueA => Number((valueA/(valueA + strengthB)).toFixed(2)))
     const chanceB = strengthA.map(valueA => Number((strengthB/(valueA + strengthB)).toFixed(2)))
 
-
     const difference = chanceA.map((valueA, index) => Math.abs(valueA - chanceB[index]))
        
     const resultFinal = difference.map((value, index) =>{
 
-       
         let finalChanceA = chanceA[index]
         let finalChanceB = chanceB[index]
 
@@ -138,8 +143,17 @@ export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player |
 
         let scoreA = 0
         let scoreB = 0
+        let target = 13
 
-        while (scoreA < 13 && scoreB < 13) {
+        while (true) {
+            if (scoreA === target || scoreB === target) {
+                break // alguém bateu a meta, partida decidida
+            }
+
+            if (scoreA === target - 1 && scoreB === target - 1) {
+                target += 3 // empatou um a menos da meta -> OT, sobe o alvo
+                continue
+            }
 
             if (Math.random() < finalChanceA) {
                 scoreA++
@@ -157,6 +171,35 @@ export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player |
     return resultFinal
 }
 
+
+
+
+export function resolveCampaign(allResults: { scoreA: number; scoreB: number }[]): CampaignResult {
+    let wins = 0
+    let losses = 0
+    const matches: CampaignMatch[] = []
+
+    for (const match of allResults) {
+        const won = match.scoreB > match.scoreA
+
+        const winsBefore = wins
+        const lossesBefore = losses
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        won ? wins++ : losses++
+
+        matches.push({ ...match, won, winsBefore, lossesBefore, winsAfter: wins, lossesAfter: losses })
+
+        if (wins === 3 || losses === 3) break
+    }
+
+    return {
+        matches,
+        wins,
+        losses,
+        status: wins === 3 ? "qualified" : "eliminated",
+    }
+}
 
 
 
