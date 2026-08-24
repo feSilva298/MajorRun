@@ -2,9 +2,9 @@
 
 import CardSimulation from "@/components/cardsimulation"
 import Resume from "@/components/resume"
-import { randomTeamsTournament, drawTeams,resultTeamB,resultFinal, resultTeamA, resolveCampaign } from "@/lib/configs"
+import { randomTeamsTournament, drawTeams, resultTeamB, resultFinal, resultTeamA, resolveCampaign, resolvePlayoffs } from "@/lib/configs"
 import { useState, useEffect, useRef } from "react"
-import { Team, CampaignMatch } from "@/lib/types/team"
+import { Team, CampaignMatch, PlayoffResult } from "@/lib/types/team"
 import { useSimulationStore } from "@/lib/store"
 import { useRouter } from "next/navigation"
 
@@ -17,11 +17,11 @@ export default function Simulation(){
 
     const [teams, setTeams] = useState<Team[]>([])
     const [scoreBoard, setScoreBoard] = useState<CampaignMatch[]>([])
-    
-    useEffect(() => {
-        if (checkedRef.current) return 
-            checkedRef.current = true
+    const [playoffResult, setPlayoffResult] = useState<PlayoffResult | null>(null)
 
+    useEffect(() => {
+        if (checkedRef.current) return
+        checkedRef.current = true
 
         const cameFromDraft = sessionStorage.getItem("cameFromDraft")
 
@@ -33,25 +33,35 @@ export default function Simulation(){
         sessionStorage.removeItem("cameFromDraft")
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setAllowed(true)
-        }, [router])
-
-
+    }, [router])
 
 
     useEffect(() => {
         if (!allowed) return
         if (useSimulationStore.getState().resultsGenerated) return
 
-        const tournamentTeams = randomTeamsTournament();
-        const drawnTeams = drawTeams(tournamentTeams);
-        const strengthA = resultTeamA(drawnTeams);
-        const strengthB = resultTeamB(dreamTeam);
-        const finalResults = resultFinal(drawnTeams, strengthA, dreamTeam, strengthB);
-        const campaign = resolveCampaign(finalResults);
+        const tournamentTeams = randomTeamsTournament()
+        const drawnTeams = drawTeams(tournamentTeams, 8) // 8 únicos: 5 suíço + 3 playoffs
+
+        const swissOpponents = drawnTeams.slice(0, 5)
+        const quarterOpponent = drawnTeams[5]
+        const semiOpponent = drawnTeams[6]
+        const finalOpponent = drawnTeams[7]
+
+        const strengthA = resultTeamA(swissOpponents)
+        const strengthB = resultTeamB(dreamTeam)
+        const finalResults = resultFinal(swissOpponents, strengthA, dreamTeam, strengthB)
+        const campaign = resolveCampaign(finalResults)
+
+        let playoffs: PlayoffResult | null = null
+        if (campaign.status === "qualified") {
+            playoffs = resolvePlayoffs(quarterOpponent, semiOpponent, finalOpponent, dreamTeam)
+        }
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setTeams(drawnTeams.slice(0, campaign.matches.length))
+        setTeams(swissOpponents.slice(0, campaign.matches.length))
         setScoreBoard(campaign.matches)
+        setPlayoffResult(playoffs)
         useSimulationStore.getState().setResultsGenerated(true)
     }, [allowed, dreamTeam])
 
@@ -70,7 +80,7 @@ export default function Simulation(){
 
         <div className="flex justify-center bg-[#0b0b0f] h-full w-full">
         <div className="flex flex-col bg-[#1c1c22] w-[920px] h-full items-center gap-12 p-2">
-            <CardSimulation teams={teams} scoreBoard={scoreBoard}/>
+            <CardSimulation teams={teams} scoreBoard={scoreBoard} playoffResult={playoffResult}/>
             <Resume/>
             </div>  
             </div>

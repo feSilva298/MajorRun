@@ -1,4 +1,4 @@
-import { Team, Player, CampaignMatch, CampaignResult } from "./types/team"
+import { Team, Player, CampaignMatch, CampaignResult, PlayoffMatch, PlayoffResult } from "./types/team"
 import json from "@/data/teams_with_ids.json"
 
 export function getRandomTeams(teams: Team[]) {
@@ -32,11 +32,11 @@ export function randomTeamsTournament(){
 }
 
 
-    //this function generates 5 teams(Team A) possible to play against
-    export function drawTeams(selectedTeams: Team[]){
+    //this function generates N teams(Team A) possible to play against - default 5, sem repetir
+    export function drawTeams(selectedTeams: Team[], amount: number = 5){
         const teams:number[] = [];
 
-        while (teams.length < 5) {
+        while (teams.length < amount) {
             const drawTeams = Math.floor(Math.random() * selectedTeams.length)
 
             if (!teams.includes(drawTeams)) {
@@ -64,9 +64,6 @@ export function drawMaps(){
 
     return maps7
 }
-
-
-
 
 //dream team
 export function resultTeamB(team: (Player | null)[]){
@@ -107,6 +104,31 @@ export function starPlayerTeamA(player: Team[]){
         return impactTeamA
 }
 
+function simulateMapScore(finalChanceA: number): { scoreA: number; scoreB: number } {
+    let scoreA = 0
+    let scoreB = 0
+    let target = 13
+
+    while (true) {
+        if (scoreA === target || scoreB === target) {
+            break // alguém bateu a meta, mapa decidido
+        }
+
+        if (scoreA === target - 1 && scoreB === target - 1) {
+            target += 3 // empatou um a menos da meta -> OT, sobe o alvo
+            continue
+        }
+
+        if (Math.random() < finalChanceA) {
+            scoreA++
+        } else {
+            scoreB++
+        }
+    }
+
+    return { scoreA, scoreB }
+}
+
 export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player | null)[], strengthB: number){
     const chanceA = strengthA.map(valueA => Number((valueA/(valueA + strengthB)).toFixed(2)))
     const chanceB = strengthA.map(valueA => Number((strengthB/(valueA + strengthB)).toFixed(2)))
@@ -141,26 +163,7 @@ export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player |
             }
         }
 
-        let scoreA = 0
-        let scoreB = 0
-        let target = 13
-
-        while (true) {
-            if (scoreA === target || scoreB === target) {
-                break // alguém bateu a meta, partida decidida
-            }
-
-            if (scoreA === target - 1 && scoreB === target - 1) {
-                target += 3 // empatou um a menos da meta -> OT, sobe o alvo
-                continue
-            }
-
-            if (Math.random() < finalChanceA) {
-                scoreA++
-            } else {
-                scoreB++
-            }
-        }
+        const { scoreA, scoreB } = simulateMapScore(finalChanceA)
 
         return {
             scoreA,
@@ -170,8 +173,6 @@ export function resultFinal(teamA: Team[], strengthA: number[], teamB: (Player |
 
     return resultFinal
 }
-
-
 
 
 export function resolveCampaign(allResults: { scoreA: number; scoreB: number }[]): CampaignResult {
@@ -202,4 +203,52 @@ export function resolveCampaign(allResults: { scoreA: number; scoreB: number }[]
 }
 
 
+// ---------------- PLAYOFFS ----------------
 
+export function resolvePlayoffs(
+    quarterOpponent: Team,
+    semiOpponent: Team,
+    finalOpponent: Team,
+    dreamTeam: (Player | null)[]
+): PlayoffResult {
+    const strengthB = resultTeamB(dreamTeam)
+
+    // Quartas - Bo1
+    const strengthQuarter = resultTeamA([quarterOpponent])
+    const quarterRaw = resultFinal([quarterOpponent], strengthQuarter, dreamTeam, strengthB)[0]
+    const quarterFinal: PlayoffMatch = { ...quarterRaw, won: quarterRaw.scoreB > quarterRaw.scoreA }
+
+    if (!quarterFinal.won) {
+        return { quarterFinal, semiFinal: null, final: null, champion: false }
+    }
+
+    // Semifinal - Bo1
+    const strengthSemi = resultTeamA([semiOpponent])
+    const semiRaw = resultFinal([semiOpponent], strengthSemi, dreamTeam, strengthB)[0]
+    const semiFinal: PlayoffMatch = { ...semiRaw, won: semiRaw.scoreB > semiRaw.scoreA }
+
+    if (!semiFinal.won) {
+        return { quarterFinal, semiFinal, final: null, champion: false }
+    }
+
+    // Final - Bo3 (primeiro a 2 vitórias, para assim que decidir)
+    const strengthFinalMaps = resultTeamA([finalOpponent, finalOpponent, finalOpponent])
+    const finalMapsRaw = resultFinal([finalOpponent, finalOpponent, finalOpponent], strengthFinalMaps, dreamTeam, strengthB)
+
+    const finalMaps: PlayoffMatch[] = []
+    let winsB = 0
+    let winsA = 0
+
+    for (const map of finalMapsRaw) {
+        const won = map.scoreB > map.scoreA
+        finalMaps.push({ ...map, won })
+
+        won ? winsB++ : winsA++
+
+        if (winsB === 2 || winsA === 2) break
+    }
+
+    const champion = winsB === 2
+
+    return { quarterFinal, semiFinal, final: finalMaps, champion }
+}

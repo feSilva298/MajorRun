@@ -39,3 +39,16 @@ export type CampaignResult = {
     losses: number
     status: "qualified" | "eliminated"
 }
+
+export type PlayoffMatch = {
+    scoreA: number
+    scoreB: number
+    won: boolean
+}
+
+export type PlayoffResult = {
+    quarterFinal: PlayoffMatch | null
+    semiFinal: PlayoffMatch | null
+    final: PlayoffMatch[] | null
+    champion: boolean
+}

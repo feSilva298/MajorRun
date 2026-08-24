@@ -3,17 +3,17 @@
 import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
 import CountUp from "react-countup"
-import { Team, CampaignMatch } from "@/lib/types/team"
+import { Team, CampaignMatch, PlayoffResult } from "@/lib/types/team"
 import { drawMaps } from "@/lib/configs"
 import {useState, useEffect} from "react"
 
 type Props = {
     teams: Team[]
     scoreBoard: CampaignMatch[]
-   
+    playoffResult: PlayoffResult | null
 }
 
-export default function CardSimulation({teams, scoreBoard}: Props) {
+export default function CardSimulation({teams, scoreBoard, playoffResult}: Props) {
     
     const [map, setMap] = useState<string[]>([])
     const [activeCard, setActiveCard] = useState(0);
