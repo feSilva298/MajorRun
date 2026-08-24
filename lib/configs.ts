@@ -32,8 +32,8 @@ export function randomTeamsTournament(){
 }
 
 
-    //this function generates N teams(Team A) possible to play against - default 5, sem repetir
-    export function drawTeams(selectedTeams: Team[], amount: number = 5){
+    //this function generates N teams(Team A) possible to play against
+    export function drawTeams(selectedTeams: Team[], amount: number = 8){
         const teams:number[] = [];
 
         while (teams.length < amount) {
@@ -49,21 +49,35 @@ export function randomTeamsTournament(){
         return teamsTournament;
     }
 
+export function drawMaps() {
+    const maps = [
+        "Mirage",
+        "Inferno",
+        "Dust2",
+        "Ancient",
+        "Overpass",
+        "Cache",
+        "Anubis",
+        "Nuke",
+        "Train",
+        "Vertigo",
+        "Cobblestone"
+    ]
 
-export function drawMaps(){
-    const maps = ["Mirage", "Inferno", "Dust2", "Ancient","Overpass", "Cache", "Anubis", "Nuke", "Train", "Vertigo", "Cobblestone"];
-    const selectedMaps:number[] = [];
+    const selectedMaps: number[] = []
 
-    while(selectedMaps.length < 7){
-        const drawMaps = Math.floor(Math.random() * maps.length);
+    while (selectedMaps.length < 10) {
+        const drawMap = Math.floor(Math.random() * maps.length)
 
-        selectedMaps.push(drawMaps)
+        if (!selectedMaps.includes(drawMap)) {
+            selectedMaps.push(drawMap)
+        }
     }
 
-    const maps7 = selectedMaps.map(index => maps[index]);
-
-    return maps7
+    return selectedMaps.map(index => maps[index])
 }
+
+
 
 //dream team
 export function resultTeamB(team: (Player | null)[]){

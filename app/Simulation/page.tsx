@@ -41,7 +41,7 @@ export default function Simulation(){
         if (useSimulationStore.getState().resultsGenerated) return
 
         const tournamentTeams = randomTeamsTournament()
-        const drawnTeams = drawTeams(tournamentTeams, 8) // 8 únicos: 5 suíço + 3 playoffs
+        const drawnTeams = drawTeams(tournamentTeams, 8)
 
         const swissOpponents = drawnTeams.slice(0, 5)
         const quarterOpponent = drawnTeams[5]
@@ -59,7 +59,7 @@ export default function Simulation(){
         }
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setTeams(swissOpponents.slice(0, campaign.matches.length))
+        setTeams(drawnTeams)
         setScoreBoard(campaign.matches)
         setPlayoffResult(playoffs)
         useSimulationStore.getState().setResultsGenerated(true)
@@ -79,7 +79,7 @@ export default function Simulation(){
         </div>
 
         <div className="flex justify-center bg-[#0b0b0f] h-full w-full">
-        <div className="flex flex-col bg-[#1c1c22] w-[920px] h-full items-center gap-12 p-2">
+        <div className="flex flex-col bg-[#0b0b0f] w-[920px] h-full items-center gap-12 p-2">
             <CardSimulation teams={teams} scoreBoard={scoreBoard} playoffResult={playoffResult}/>
             <Resume/>
             </div>  
