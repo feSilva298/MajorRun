@@ -7,12 +7,12 @@ type Props = {
     player?: Player | null
     handleClick?: () => boolean
     SwitchRole?: (index:number) => void
-    value: number
-    cardIndex: number
+    value?: number
+    cardIndex?: number
 }
 
 
-export default function CardPlayers({player, handleClick, SwitchRole, value, cardIndex}: Props){
+export default function CardPlayers({player, handleClick, SwitchRole, value = 0, cardIndex = 0}: Props){
  
 
     if(player){

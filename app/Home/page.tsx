@@ -1,15 +1,9 @@
-"use client"
 
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link"
-import {randomTeamsTournament} from "@/lib/configs"
-import {useEffect} from "react"
 
 export default function Home(){
 
-    useEffect(() => {
-        randomTeamsTournament();
-    }, [])
 
     return(
         <>
