@@ -52,3 +52,10 @@ export type PlayoffResult = {
     final: PlayoffMatch[] | null
     champion: boolean
 }
+
+export type MatchCandidate = {
+    map: string
+    opponent: Team | undefined
+    scoreA: number
+    scoreB: number
+}

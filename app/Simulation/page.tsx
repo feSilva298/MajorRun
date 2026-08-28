@@ -2,7 +2,7 @@
 
 import CardSimulation from "@/components/cardsimulation"
 import Resume from "@/components/resume"
-import { randomTeamsTournament, drawTeams, resultTeamB, resultFinal, resultTeamA, resolveCampaign, resolvePlayoffs } from "@/lib/configs"
+import { randomTeamsTournament, drawTeams, drawMaps, resultTeamB, resultFinal, resultTeamA, resolveCampaign, resolvePlayoffs } from "@/lib/configs"
 import { useState, useEffect, useRef } from "react"
 import { Team, CampaignMatch, PlayoffResult } from "@/lib/types/team"
 import { useSimulationStore } from "@/lib/store"
@@ -18,6 +18,8 @@ export default function Simulation(){
     const [teams, setTeams] = useState<Team[]>([])
     const [scoreBoard, setScoreBoard] = useState<CampaignMatch[]>([])
     const [playoffResult, setPlayoffResult] = useState<PlayoffResult | null>(null)
+    const [maps, setMaps] = useState<string[]>([])
+    const [campaignEnded, setCampaignEnded] = useState(false)
 
     useEffect(() => {
         if (checkedRef.current) return
@@ -62,6 +64,7 @@ export default function Simulation(){
         setTeams(drawnTeams)
         setScoreBoard(campaign.matches)
         setPlayoffResult(playoffs)
+        setMaps(drawMaps())
         useSimulationStore.getState().setResultsGenerated(true)
     }, [allowed, dreamTeam])
 
@@ -78,10 +81,24 @@ export default function Simulation(){
             <p className="text-[#c8a24a] text-7xl font-bebas">A Campanha</p>    
         </div>
 
-        <div className="flex justify-center bg-[#0b0b0f] h-full w-full">
-        <div className="flex flex-col bg-[#0b0b0f] w-[920px] h-full items-center gap-12 p-2">
-            <CardSimulation teams={teams} scoreBoard={scoreBoard} playoffResult={playoffResult}/>
-            <Resume/>
+        <div className="flex justify-center bg-[#0b0b0f] min-h-screen w-full">
+        <div className="flex flex-col bg-[#1c1c22] w-[920px] h-full items-center gap-12 p-2">
+            <CardSimulation
+                teams={teams}
+                scoreBoard={scoreBoard}
+                playoffResult={playoffResult}
+                maps={maps}
+                onCampaignEnd={() => setCampaignEnded(true)}
+            />
+            {campaignEnded && (
+                <Resume
+                    teams={teams}
+                    scoreBoard={scoreBoard}
+                    playoffResult={playoffResult}
+                    dreamTeam={dreamTeam}
+                    maps={maps}
+                />
+            )}
             </div>  
             </div>
         </>

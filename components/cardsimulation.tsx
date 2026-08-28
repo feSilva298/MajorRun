@@ -4,13 +4,14 @@ import { Separator } from "@/components/ui/separator"
 import { motion } from "framer-motion"
 import CountUp from "react-countup"
 import { Team, CampaignMatch, PlayoffResult } from "@/lib/types/team"
-import { drawMaps } from "@/lib/configs"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 type Props = {
     teams: Team[]
     scoreBoard: CampaignMatch[]
     playoffResult: PlayoffResult | null
+    maps: string[]
+    onCampaignEnd?: () => void
 }
 
 // ============================================================
@@ -22,14 +23,13 @@ const COUNT_DURATION = 3
 export default function CardSimulation({
     teams,
     scoreBoard,
-    playoffResult
+    playoffResult,
+    maps,
+    onCampaignEnd
 }: Props) {
-
-    const [maps] = useState<string[]>(() => drawMaps())
 
     const [activeCard, setActiveCard] = useState(0)
 
-    // Controla quais partes inferiores dos cards estão abertas
     const [openCards, setOpenCards] = useState<Record<string, boolean>>({
         "stage-0": true,
         quarter: false,
@@ -37,7 +37,6 @@ export default function CardSimulation({
         final: true,
     })
 
-    // Controla quais placares já terminaram a animação
     const [finishedScores, setFinishedScores] = useState<Record<string, boolean>>({})
 
     // Controle da Final
@@ -48,11 +47,14 @@ export default function CardSimulation({
     const semiFinalIndex = scoreBoard.length + 1
     const finalIndex = scoreBoard.length + 2
 
-    /*
-     * ============================================================
-     * CONTROLE DOS CARDS
-     * ============================================================
-     */
+    /* ============================================================
+       FIM DE CAMPANHA
+    ============================================================ */
+
+
+    /* ============================================================
+       CONTROLE DOS CARDS
+    ============================================================ */
 
     const toggleCard = (card: string) => {
         setOpenCards(prev => ({
@@ -76,11 +78,9 @@ export default function CardSimulation({
         }))
     }
 
-    /*
-     * ============================================================
-     * FINAL
-     * ============================================================
-     */
+    /* ============================================================
+       FINAL
+    ============================================================ */
 
     const finalMaps = playoffResult?.final ?? []
 
@@ -102,16 +102,45 @@ export default function CardSimulation({
         map => map.scoreA > map.scoreB
     ).length
 
+    /*
+     * A FINAL SÓ É CONSIDERADA TERMINADA QUANDO
+     * NÃO EXISTEM MAIS MAPAS PARA JOGAR.
+     */
+    const finalFinished =
+        finalMapFinished &&
+        finalMapIndex >= finalMaps.length - 1
+
+    /*
+     * DREAM TEAM FOI CAMPEÃO
+     */
+    const dreamTeamChampion =
+        finalFinished && finalWinsA > finalWinsB
+
+    /*
+     * DREAM TEAM PERDEU A FINAL
+     */
+    const dreamTeamLost =
+        finalFinished && finalWinsB > finalWinsA
+
     const currentMapWon =
         currentFinalMap
             ? currentFinalMap.scoreB > currentFinalMap.scoreA
             : false
 
     /*
-     * ============================================================
-     * CORES
-     * ============================================================
+     * Assim que a série da final termina (seja vitória ou
+     * derrota do Dream Team), avisamos que a campanha acabou.
      */
+    useEffect(() => {
+        if (finalFinished) {
+            onCampaignEnd?.()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finalFinished])
+
+    /* ============================================================
+       CORES
+    ============================================================ */
 
     const getResultColor = (
         finished: boolean,
@@ -128,10 +157,32 @@ export default function CardSimulation({
     }
 
     /*
-     * ============================================================
-     * RENDER
-     * ============================================================
+     * COR DO PLACAR FINAL DA SÉRIE
+     *
+     * CAMPEÃO  -> DOURADO
+     * PERDEU    -> VERMELHO
+     * EM ANDAMENTO -> CINZA
      */
+    const getFinalSeriesColor = () => {
+
+        if (!finalFinished) {
+            return "text-[#8a8a8a]"
+        }
+
+        if (dreamTeamChampion) {
+            return "text-[#C8A24A]"
+        }
+
+        if (dreamTeamLost) {
+            return "text-[#D9534F]"
+        }
+
+        return "text-[#8a8a8a]"
+    }
+
+    /* ============================================================
+       RENDER
+    ============================================================ */
 
     return (
         <>
@@ -143,60 +194,60 @@ export default function CardSimulation({
 
                 const cardKey = `stage-${index}`
                 const scoreFinished = !!finishedScores[cardKey]
+                const isLastSwissMatch = index === scoreBoard.length - 1
 
                 return (
                     index <= activeCard && (
-                        <motion.div
+                        <div
                             key={cardKey}
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="w-[910px] bg-[#0b0b0f]"
+                            className="w-[910px] bg-[#0b0b0f] pb-[3px]"
                         >
-
-                            {/* HEADER */}
-
-                            <div
-                                onClick={() => toggleCard(cardKey)}
-                                className="flex bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8 }}
+                                className="w-full bg-[#0b0b0f]"
                             >
 
-                                <div className="flex flex-col">
-                                    <p className="text-[#ededed] font-bold text-xl">
-                                        Stage 3
-                                    </p>
+                                <div
+                                    onClick={() => toggleCard(cardKey)}
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                >
 
-                                    <p className="text-[#ededed] text-xs">
-                                        {match.winsBefore} - {match.lossesBefore}
-                                    </p>
-                                </div>
-
-                                <Separator
-                                    orientation="vertical"
-                                    className="bg-[#0b0b0f]"
-                                />
-
-                                <div className="flex min-w-3xl justify-between">
-
-                                    <div className="flex gap-2">
-
-                                        <p className="text-xs text-[#ededed] font-light">
-                                            vs
+                                    <div className="flex flex-col shrink-0">
+                                        <p className="text-[#ededed] font-bold text-xl">
+                                            Stage 3
                                         </p>
 
-                                        <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold">
-
-                                            {teams[index]?.team}
-
-                                            <span className="text-xl font-normal">
-                                                {teams[index]?.year}
-                                            </span>
-
+                                        <p className="text-[#ededed] text-xs">
+                                            {match.winsBefore} - {match.lossesBefore}
                                         </p>
-
                                     </div>
 
-                                    <div className="flex items-center gap-4">
+                                    <Separator
+                                        orientation="vertical"
+                                        className="bg-[#0b0b0f] h-full"
+                                    />
+
+                                    <div className="flex items-center min-w-0">
+                                        <div className="flex gap-2 min-w-0">
+
+                                            <p className="text-xs text-[#ededed] font-light shrink-0">
+                                                vs
+                                            </p>
+
+                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+                                                {teams[index]?.team}
+
+                                                <span className="text-xl font-normal shrink-0">
+                                                    {teams[index]?.year}
+                                                </span>
+                                            </p>
+
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-4 shrink-0">
 
                                         <p className="text-xs text-[#ededed] font-light">
                                             bo1
@@ -208,8 +259,6 @@ export default function CardSimulation({
                                                 match.won
                                             )}`}
                                         >
-
-                                            {/* DREAM TEAM = SCORE B */}
 
                                             <CountUp
                                                 key={`scoreB-${index}-${match.scoreB}-${match.scoreA}`}
@@ -233,6 +282,15 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
+                                                    /*
+                                                     * Se essa foi a última partida do swiss e
+                                                     * não existe playoff (foi eliminado),
+                                                     * a campanha acaba aqui.
+                                                     */
+                                                    if (isLastSwissMatch && !playoffResult) {
+                                                        onCampaignEnd?.()
+                                                    }
+
                                                     if (index === activeCard) {
 
                                                         setActiveCard(prev => prev + 1)
@@ -253,64 +311,68 @@ export default function CardSimulation({
 
                                 </div>
 
-                            </div>
+                                <motion.div
+                                    initial={false}
+                                    animate={{
+                                        height: openCards[cardKey]
+                                            ? 195
+                                            : 0,
+                                        opacity: openCards[cardKey]
+                                            ? 1
+                                            : 0
+                                    }}
+                                    transition={{ duration: 0.3 }}
+                                    className="overflow-hidden"
+                                >
 
-                            {/* CONTEÚDO DO MAPA */}
+                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                            <motion.div
-                                initial={false}
-                                animate={{
-                                    height: openCards[cardKey]
-                                        ? 195
-                                        : 0,
-                                    opacity: openCards[cardKey]
-                                        ? 1
-                                        : 0
-                                }}
-                                transition={{ duration: 0.3 }}
-                                className="overflow-hidden"
-                            >
+                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                            <p className="text-[#ededed] font-bold">
+                                                {maps[index]}
+                                            </p>
 
-                                    <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                            {scoreFinished && (
+                                                <p
+                                                    className={`font-bold ${getResultColor(
+                                                        scoreFinished,
+                                                        match.won
+                                                    )}`}
+                                                >
+                                                    {match.scoreB} - {match.scoreA}
+                                                </p>
+                                            )}
 
-                                        <p className="text-[#ededed] font-bold">
-                                            {maps[index]}
-                                        </p>
-
-                                        <p
-                                            className={`font-bold ${getResultColor(
-                                                scoreFinished,
-                                                match.won
-                                            )}`}
-                                        >
-                                            {match.scoreB} - {match.scoreA}
-                                        </p>
-
-                                        <Separator
-                                            orientation="vertical"
-                                            className="bg-[#0b0b0f] h-6"
-                                        />
-
-                                        <p className="text-[#ededed]">
-                                            4-8
-                                        </p>
-
-                                        <p className="text-[#ededed]">
-                                            9-3
-                                        </p>
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                </motion.div>
 
                             </motion.div>
-
-                        </motion.div>
+                        </div>
                     )
                 )
             })}
+
+            {/* =====================================================
+                PLAYOFFS
+            ====================================================== */}
+
+            {activeCard >= quarterFinalIndex &&
+                playoffResult?.quarterFinal && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
+                        className="flex items-center justify-center w-[910px] h-[70px]"
+                    >
+                        <p className="text-[#ededed] font-bold text-6xl font-bebas">
+                            Playoffs
+                        </p>
+                    </motion.div>
+                )}
 
             {/* =====================================================
                 QUARTER FINAL
@@ -324,54 +386,54 @@ export default function CardSimulation({
                     const scoreFinished = !!finishedScores[cardKey]
 
                     return (
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="w-[910px] bg-[#0b0b0f]"
-                        >
+                        <div className="w-[910px] bg-[#0b0b0f] pb-[3px]">
 
-                            {/* HEADER */}
-
-                            <div
-                                onClick={() => toggleCard(cardKey)}
-                                className="flex bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8 }}
+                                className="w-full bg-[#0b0b0f]"
                             >
 
-                                <div className="flex flex-col">
+                                <div
+                                    onClick={() => toggleCard(cardKey)}
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                >
 
-                                    <p className="text-[#ededed] font-bold text-xl">
-                                        Quarter Final
-                                    </p>
-
-                                </div>
-
-                                <Separator
-                                    orientation="vertical"
-                                    className="bg-[#0b0b0f]"
-                                />
-
-                                <div className="flex min-w-3xl justify-between">
-
-                                    <div className="flex gap-2">
-
-                                        <p className="text-xs text-[#ededed] font-light">
-                                            vs
+                                    <div className="flex flex-col shrink-0">
+                                        <p className="text-[#ededed] font-bold text-xl">
+                                            Quarter Final
                                         </p>
+                                    </div>
 
-                                        <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold">
+                                    <Separator
+                                        orientation="vertical"
+                                        className="bg-[#0b0b0f] h-full"
+                                    />
 
-                                            {teams[5]?.team}
+                                    <div className="flex items-center min-w-0">
 
-                                            <span className="text-xl font-normal">
-                                                {teams[5]?.year}
-                                            </span>
+                                        <div className="flex gap-2 min-w-0">
 
-                                        </p>
+                                            <p className="text-xs text-[#ededed] font-light shrink-0">
+                                                vs
+                                            </p>
+
+                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+
+                                                {teams[5]?.team}
+
+                                                <span className="text-xl font-normal shrink-0">
+                                                    {teams[5]?.year}
+                                                </span>
+
+                                            </p>
+
+                                        </div>
 
                                     </div>
 
-                                    <div className="flex items-center gap-4">
+                                    <div className="flex items-center gap-4 shrink-0">
 
                                         <p className="text-xs text-[#ededed] font-light">
                                             bo1
@@ -383,8 +445,6 @@ export default function CardSimulation({
                                                 match.won
                                             )}`}
                                         >
-
-                                            {/* DREAM TEAM = SCORE B */}
 
                                             <CountUp
                                                 key={`quarter-scoreB-${match.scoreA}-${match.scoreB}`}
@@ -408,6 +468,14 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
+                                                    /*
+                                                     * Perdeu nas quartas: não existe semi.
+                                                     * Campanha acaba aqui.
+                                                     */
+                                                    if (!match.won) {
+                                                        onCampaignEnd?.()
+                                                    }
+
                                                     if (activeCard === quarterFinalIndex) {
 
                                                         setActiveCard(prev => prev + 1)
@@ -426,57 +494,43 @@ export default function CardSimulation({
 
                                 </div>
 
-                            </div>
+                                <motion.div
+                                    initial={false}
+                                    animate={{
+                                        height: openCards.quarter ? 195 : 0,
+                                        opacity: openCards.quarter ? 1 : 0
+                                    }}
+                                    transition={{ duration: 0.3 }}
+                                    className="overflow-hidden"
+                                >
 
-                            {/* CONTEÚDO DO MAPA */}
+                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                            <motion.div
-                                initial={false}
-                                animate={{
-                                    height: openCards.quarter ? 195 : 0,
-                                    opacity: openCards.quarter ? 1 : 0
-                                }}
-                                transition={{ duration: 0.3 }}
-                                className="overflow-hidden"
-                            >
+                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                            <p className="text-[#ededed] font-bold">
+                                                {maps[quarterFinalIndex]}
+                                            </p>
 
-                                    <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                            {scoreFinished && (
+                                                <p
+                                                    className={`font-bold ${getResultColor(
+                                                        scoreFinished,
+                                                        match.won
+                                                    )}`}
+                                                >
+                                                    {match.scoreB} - {match.scoreA}
+                                                </p>
+                                            )}
 
-                                        <p className="text-[#ededed] font-bold">
-                                            {maps[quarterFinalIndex]}
-                                        </p>
-
-                                        <p
-                                            className={`font-bold ${getResultColor(
-                                                scoreFinished,
-                                                match.won
-                                            )}`}
-                                        >
-                                            {match.scoreB} - {match.scoreA}
-                                        </p>
-
-                                        <Separator
-                                            orientation="vertical"
-                                            className="bg-[#0b0b0f] h-6"
-                                        />
-
-                                        <p className="text-[#ededed]">
-                                            4-8
-                                        </p>
-
-                                        <p className="text-[#ededed]">
-                                            9-3
-                                        </p>
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                </motion.div>
 
                             </motion.div>
-
-                        </motion.div>
+                        </div>
                     )
                 })()}
 
@@ -492,54 +546,56 @@ export default function CardSimulation({
                     const scoreFinished = !!finishedScores[cardKey]
 
                     return (
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8 }}
-                            className="w-[910px] bg-[#0b0b0f]"
-                        >
+                        <div className="w-[910px] bg-[#0b0b0f] pb-[3px]">
 
-                            {/* HEADER */}
-
-                            <div
-                                onClick={() => toggleCard(cardKey)}
-                                className="flex bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8 }}
+                                className="w-full bg-[#0b0b0f]"
                             >
 
-                                <div className="flex flex-col">
+                                <div
+                                    onClick={() => toggleCard(cardKey)}
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                >
 
-                                    <p className="text-[#ededed] font-bold text-xl">
-                                        Semi Final
-                                    </p>
+                                    <div className="flex flex-col shrink-0">
 
-                                </div>
-
-                                <Separator
-                                    orientation="vertical"
-                                    className="bg-[#0b0b0f]"
-                                />
-
-                                <div className="flex min-w-3xl justify-between">
-
-                                    <div className="flex gap-2">
-
-                                        <p className="text-xs text-[#ededed] font-light">
-                                            vs
-                                        </p>
-
-                                        <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold">
-
-                                            {teams[6]?.team}
-
-                                            <span className="text-xl font-normal">
-                                                {teams[6]?.year}
-                                            </span>
-
+                                        <p className="text-[#ededed] font-bold text-xl">
+                                            Semi Final
                                         </p>
 
                                     </div>
 
-                                    <div className="flex items-center gap-4">
+                                    <Separator
+                                        orientation="vertical"
+                                        className="bg-[#0b0b0f] h-full"
+                                    />
+
+                                    <div className="flex items-center min-w-0">
+
+                                        <div className="flex gap-2 min-w-0">
+
+                                            <p className="text-xs text-[#ededed] font-light shrink-0">
+                                                vs
+                                            </p>
+
+                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+
+                                                {teams[6]?.team}
+
+                                                <span className="text-xl font-normal shrink-0">
+                                                    {teams[6]?.year}
+                                                </span>
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="flex items-center gap-4 shrink-0">
 
                                         <p className="text-xs text-[#ededed] font-light">
                                             bo1
@@ -551,8 +607,6 @@ export default function CardSimulation({
                                                 match.won
                                             )}`}
                                         >
-
-                                            {/* DREAM TEAM = SCORE B */}
 
                                             <CountUp
                                                 key={`semi-scoreB-${match.scoreA}-${match.scoreB}`}
@@ -576,6 +630,14 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
+                                                    /*
+                                                     * Perdeu na semi: não existe final.
+                                                     * Campanha acaba aqui.
+                                                     */
+                                                    if (!match.won) {
+                                                        onCampaignEnd?.()
+                                                    }
+
                                                     if (activeCard === semiFinalIndex) {
 
                                                         setActiveCard(prev => prev + 1)
@@ -594,116 +656,104 @@ export default function CardSimulation({
 
                                 </div>
 
-                            </div>
+                                <motion.div
+                                    initial={false}
+                                    animate={{
+                                        height: openCards.semi ? 195 : 0,
+                                        opacity: openCards.semi ? 1 : 0
+                                    }}
+                                    transition={{ duration: 0.3 }}
+                                    className="overflow-hidden"
+                                >
 
-                            {/* CONTEÚDO DO MAPA */}
+                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                            <motion.div
-                                initial={false}
-                                animate={{
-                                    height: openCards.semi ? 195 : 0,
-                                    opacity: openCards.semi ? 1 : 0
-                                }}
-                                transition={{ duration: 0.3 }}
-                                className="overflow-hidden"
-                            >
+                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                            <p className="text-[#ededed] font-bold">
+                                                {maps[semiFinalIndex]}
+                                            </p>
 
-                                    <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                            {scoreFinished && (
+                                                <p
+                                                    className={`font-bold ${getResultColor(
+                                                        scoreFinished,
+                                                        match.won
+                                                    )}`}
+                                                >
+                                                    {match.scoreB} - {match.scoreA}
+                                                </p>
+                                            )}
 
-                                        <p className="text-[#ededed] font-bold">
-                                            {maps[semiFinalIndex]}
-                                        </p>
-
-                                        <p
-                                            className={`font-bold ${getResultColor(
-                                                scoreFinished,
-                                                match.won
-                                            )}`}
-                                        >
-                                            {match.scoreB} - {match.scoreA}
-                                        </p>
-
-                                        <Separator
-                                            orientation="vertical"
-                                            className="bg-[#0b0b0f] h-6"
-                                        />
-
-                                        <p className="text-[#ededed]">
-                                            4-8
-                                        </p>
-
-                                        <p className="text-[#ededed]">
-                                            9-3
-                                        </p>
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                </motion.div>
 
                             </motion.div>
-
-                        </motion.div>
+                        </div>
                     )
                 })()}
 
             {/* =====================================================
-                FINAL - UM ÚNICO CARD
+                FINAL
             ====================================================== */}
 
             {activeCard >= finalIndex &&
                 playoffResult?.final &&
                 currentFinalMap && (
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="w-[910px] bg-[#0b0b0f]"
-                    >
+                    <div className="w-[910px] bg-[#C8A24A] pb-[3px]">
 
-                        {/* HEADER */}
-
-                        <div
-                            onClick={() => toggleCard("final")}
-                            className="flex bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
+                            className="w-full bg-[#0b0b0f]"
                         >
 
-                            <div className="flex flex-col">
+                            <div
+                                onClick={() => toggleCard("final")}
+                                className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                            >
 
-                                <p className="text-[#ededed] font-bold text-xl">
-                                    Final
-                                </p>
+                                <div className="flex flex-col shrink-0">
 
-                            </div>
-
-                            <Separator
-                                orientation="vertical"
-                                className="bg-[#0b0b0f]"
-                            />
-
-                            <div className="flex min-w-3xl justify-between w-full">
-
-                                <div className="flex gap-2">
-
-                                    <p className="text-xs text-[#ededed] font-light">
-                                        vs
-                                    </p>
-
-                                    <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold">
-
-                                        {teams[7]?.team}
-
-                                        <span className="text-xl font-normal">
-                                            {teams[7]?.year}
-                                        </span>
-
+                                    <p className="text-[#ededed] font-bold text-xl">
+                                        Final
                                     </p>
 
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <Separator
+                                    orientation="vertical"
+                                    className="bg-[#0b0b0f] h-full"
+                                />
+
+                                <div className="flex items-center min-w-0">
+
+                                    <div className="flex gap-2 min-w-0">
+
+                                        <p className="text-xs text-[#ededed] font-light shrink-0">
+                                            vs
+                                        </p>
+
+                                        <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+
+                                            {teams[7]?.team}
+
+                                            <span className="text-xl font-normal shrink-0">
+                                                {teams[7]?.year}
+                                            </span>
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="flex items-center gap-4 shrink-0">
 
                                     <p className="text-xs text-[#ededed] font-light">
                                         bo3
@@ -712,16 +762,8 @@ export default function CardSimulation({
                                     {/* PLACAR DA SÉRIE */}
 
                                     <p
-                                        className={`font-bold text-3xl transition-colors duration-300 ${
-                                            !finalMapFinished
-                                                ? "text-[#8a8a8a]"
-                                                : currentMapWon
-                                                    ? "text-[#5CB85C]"
-                                                    : "text-[#D9534F]"
-                                        }`}
+                                        className={`font-bold text-3xl transition-colors duration-300 ${getFinalSeriesColor()}`}
                                     >
-
-                                        {/* DREAM TEAM = ESQUERDA */}
 
                                         {finalWinsA}
 
@@ -735,175 +777,151 @@ export default function CardSimulation({
 
                             </div>
 
-                        </div>
+                            {/* CONTEÚDO DA FINAL */}
 
-                        {/* CONTEÚDO DA FINAL */}
+                            <motion.div
+                                initial={false}
+                                animate={{
+                                    height: openCards.final ? 195 : 0,
+                                    opacity: openCards.final ? 1 : 0
+                                }}
+                                transition={{ duration: 0.3 }}
+                                className="overflow-hidden"
+                            >
 
-                        <motion.div
-                            initial={false}
-                            animate={{
-                                height: openCards.final ? 195 : 0,
-                                opacity: openCards.final ? 1 : 0
-                            }}
-                            transition={{ duration: 0.3 }}
-                            className="overflow-hidden"
-                        >
+                                <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                            <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                    <div className="flex flex-col bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                <div className="flex flex-col bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                        {/* MAPA ATUAL */}
 
-                                    {/* MAPA ATUAL */}
+                                        <div className="flex items-center justify-between">
 
-                                    <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-4">
 
-                                        <div className="flex items-center gap-4">
+                                                <p className="text-[#ededed] font-bold">
+                                                    Mapa {finalMapIndex + 1}
+                                                </p>
 
-                                            <p className="text-[#ededed] font-bold">
-                                                Map {finalMapIndex + 1}
-                                            </p>
+                                                <Separator
+                                                    orientation="vertical"
+                                                    className="bg-[#0b0b0f] h-6"
+                                                />
 
-                                            <Separator
-                                                orientation="vertical"
-                                                className="bg-[#0b0b0f] h-6"
-                                            />
+                                                <p className="text-[#ededed] font-bold">
+                                                    {maps[finalIndex + finalMapIndex]}
+                                                </p>
 
-                                            <p className="text-[#ededed] font-bold">
-                                                {maps[finalIndex + finalMapIndex]}
-                                            </p>
+                                            </div>
 
-                                        </div>
+                                            {/* PLACAR DO MAPA */}
 
-                                        {/* PLACAR DO MAPA */}
+                                            <p
+                                                className={`font-bold text-2xl transition-colors duration-300 ${
+                                                    !finalMapFinished
+                                                        ? "text-[#8a8a8a]"
+                                                        : currentMapWon
+                                                            ? "text-[#5CB85C]"
+                                                            : "text-[#D9534F]"
+                                                }`}
+                                            >
 
-                                        <p
-                                            className={`font-bold text-2xl transition-colors duration-300 ${
-                                                !finalMapFinished
-                                                    ? "text-[#8a8a8a]"
-                                                    : currentMapWon
-                                                        ? "text-[#5CB85C]"
-                                                        : "text-[#D9534F]"
-                                            }`}
-                                        >
+                                                <CountUp
+                                                    key={`final-map-scoreB-${finalMapIndex}-${currentFinalMap.scoreB}`}
+                                                    end={currentFinalMap.scoreB}
+                                                    start={0}
+                                                    duration={COUNT_DURATION}
+                                                />
 
-                                            {/* DREAM TEAM = ESQUERDA */}
+                                                {" - "}
 
-                                            <CountUp
-                                                key={`final-map-scoreB-${finalMapIndex}-${currentFinalMap.scoreB}`}
-                                                end={currentFinalMap.scoreB}
-                                                start={0}
-                                                duration={COUNT_DURATION}
-                                            />
+                                                <CountUp
+                                                    key={`final-map-scoreA-${finalMapIndex}-${currentFinalMap.scoreA}`}
+                                                    end={currentFinalMap.scoreA}
+                                                    start={0}
+                                                    duration={COUNT_DURATION}
+                                                    onEnd={() => {
 
-                                            {" - "}
-
-                                            <CountUp
-                                                key={`final-map-scoreA-${finalMapIndex}-${currentFinalMap.scoreA}`}
-                                                end={currentFinalMap.scoreA}
-                                                start={0}
-                                                duration={COUNT_DURATION}
-                                                onEnd={() => {
-
-                                                    if (finalMapFinished) {
-                                                        return
-                                                    }
-
-                                                    setFinalMapFinished(true)
-
-                                                    setTimeout(() => {
-
-                                                        if (
-                                                            finalMapIndex <
-                                                            finalMaps.length - 1
-                                                        ) {
-
-                                                            setFinalMapIndex(
-                                                                prev => prev + 1
-                                                            )
-
-                                                            setFinalMapFinished(false)
+                                                        if (finalMapFinished) {
+                                                            return
                                                         }
 
-                                                    }, 1000)
-                                                }}
-                                            />
+                                                        setFinalMapFinished(true)
 
-                                        </p>
+                                                        setTimeout(() => {
 
-                                    </div>
+                                                            if (
+                                                                finalMapIndex <
+                                                                finalMaps.length - 1
+                                                            ) {
 
-                                    {/* ROUNDS */}
+                                                                setFinalMapIndex(
+                                                                    prev => prev + 1
+                                                                )
 
-                                    <div className="flex items-center gap-4 mt-4">
+                                                                setFinalMapFinished(false)
+                                                            }
 
-                                        <p className="text-[#ededed]">
-                                            4-8
-                                        </p>
+                                                        }, 1000)
+                                                    }}
+                                                />
 
-                                        <Separator
-                                            orientation="vertical"
-                                            className="bg-[#0b0b0f] h-6"
-                                        />
-
-                                        <p className="text-[#ededed]">
-                                            9-3
-                                        </p>
-
-                                    </div>
-
-                                    {/* HISTÓRICO DOS MAPAS */}
-
-                                    {finishedFinalMaps.length > 0 && (
-
-                                        <div className="flex gap-4 mt-auto">
-
-                                            {finishedFinalMaps.map(
-                                                (map, index) => {
-
-                                                    // scoreB = Dream Team
-                                                    const won =
-                                                        map.scoreB > map.scoreA
-
-                                                    return (
-                                                        <div
-                                                            key={`finished-map-${index}`}
-                                                            className="flex items-center gap-2"
-                                                        >
-
-                                                            <p className="text-[#ededed] text-xs">
-                                                                {maps[finalIndex + index]}
-                                                            </p>
-
-                                                            <p
-                                                                className={`font-bold text-xs ${
-                                                                    won
-                                                                        ? "text-[#5CB85C]"
-                                                                        : "text-[#D9534F]"
-                                                                }`}
-                                                            >
-
-                                                                {map.scoreB}
-                                                                {" - "}
-                                                                {map.scoreA}
-
-                                                            </p>
-
-                                                        </div>
-                                                    )
-                                                }
-                                            )}
+                                            </p>
 
                                         </div>
 
-                                    )}
+                                        {/* HISTÓRICO DOS MAPAS */}
+
+                                        {finishedFinalMaps.length > 0 && (
+
+                                            <div className="flex gap-4 mt-auto">
+
+                                                {finishedFinalMaps.map(
+                                                    (map, index) => {
+
+                                                        const won =
+                                                            map.scoreB > map.scoreA
+
+                                                        return (
+                                                            <div
+                                                                key={`finished-map-${index}`}
+                                                                className="flex items-center gap-2"
+                                                            >
+
+                                                                <p className="text-[#ededed] text-xs">
+                                                                    {maps[finalIndex + index]}
+                                                                </p>
+
+                                                                <p
+                                                                    className={`font-bold text-xs ${
+                                                                        won
+                                                                            ? "text-[#5CB85C]"
+                                                                            : "text-[#D9534F]"
+                                                                    }`}
+                                                                >
+
+                                                                    {map.scoreB}
+                                                                    {" - "}
+                                                                    {map.scoreA}
+
+                                                                </p>
+
+                                                            </div>
+                                                        )
+                                                    }
+                                                )}
+
+                                            </div>
+                                        )}
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                            </motion.div>
 
                         </motion.div>
-
-                    </motion.div>
+                    </div>
                 )}
         </>
     )
