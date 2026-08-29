@@ -11,8 +11,8 @@ export default function SelectPlayers({selectedTeams, onSelectPlayer}: Props){
 
     return(
         <>
-        <div className="flex flex-col w-76 h-[900px] gap-8">
-            <div className="w-full flex flex-col bg-[#0b0b0f] h-[315px]">
+        <div className="flex flex-col w-full gap-8">
+            <div className="w-full flex flex-col bg-[#0b0b0f] h-fit">
             <div className="flex flex-col bg-[#1c1c22] border-[#0b0b0f] border w-full h-fit px-2 py-0.5 ">
                 <p className="text-[#EDEDED] font-bold text-2xl">{teams1.team}</p>
                 <p className="text-[#EDEDED] ">{teams1.year}</p>
@@ -69,7 +69,7 @@ export default function SelectPlayers({selectedTeams, onSelectPlayer}: Props){
             </button>
             </div>
 
-            <div className="w-full flex flex-col bg-[#0b0b0f] h-[315px]">
+            <div className="w-full flex flex-col bg-[#0b0b0f] h-fit">
              <div className="flex flex-col bg-[#1c1c22] border-[#0b0b0f] border w-full h-fit px-2 py-0.5 ">
                 <p className="text-[#EDEDED] font-bold text-2xl">{teams2.team}</p>
                 <p className="text-[#EDEDED]">{teams2.year}</p>
@@ -127,7 +127,4 @@ export default function SelectPlayers({selectedTeams, onSelectPlayer}: Props){
             </div>
         </div>
         </>
-    )}
-
-    
-    
+    )}  

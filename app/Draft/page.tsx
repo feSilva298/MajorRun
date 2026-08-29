@@ -1,6 +1,6 @@
 "use client"
 
-import CardPlayers from "@/components/cardPlayers"
+import CardPlayers from "@/components/cardplayers"
 import StarPlayer from "@/components/starplayer"
 import Stats from "@/components/stastistics"
 import SelectPlayers from "@/components/selectplayers"
@@ -113,33 +113,31 @@ if (draftedTeams.length === 0) {
     if (rounds == 6) {
         return(
             <>
-            <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
-                <div className="flex justify-center gap-330">
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Draft</p>
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada 5/5</p>
+            <div className="flex flex-col bg-[#0B0B0F] items-center gap-6 w-full min-h-screen p-6 lg:p-0 lg:justify-center">
+                <div className="flex justify-between w-full max-w-[600px] lg:max-w-[1700px]">
+                    <p className="text-[#ededed] font-bold font-bebas text-3xl sm:text-4xl lg:text-6xl">Draft</p>
+                    <p className="text-[#ededed] font-bold font-bebas text-3xl sm:text-4xl lg:text-6xl">Rodada 5/5</p>
                 </div>
-                <div className="flex justify-center gap-6">
+                <div className="flex flex-col lg:flex-row justify-center gap-6 w-full items-center">
                 
-                    <div className="flex bg-[#1C1C22] w-[350px] h-[750px] p-6 justify-center">
-                        <Link href="/Simulation" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="h-fit hover:bg-[#c8a24a] transition-all duration-200">
-                            <button className="w-[300px] text-[#ededed] text-4xl font-bold border-[#c8a24a] border-2 p-6">Começar</button>
+                    <div className="flex bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6 justify-center items-center lg:items-start">
+                        <Link href="/Simulation" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="w-full max-w-[300px] hover:bg-[#c8a24a] transition-all duration-200">
+                            <button className="w-full text-[#ededed] text-2xl sm:text-3xl lg:text-4xl font-bold border-[#c8a24a] border-2 p-4 lg:p-6">Começar</button>
                         </Link>
                     </div>
                 
-                <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
-                    <div>
-                        <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0} />
-                    </div>
-                    <div className="flex gap-6">
+                <div className="bg-[#1C1C22] w-full max-w-[600px] lg:w-[1000px] lg:max-w-none lg:h-[750px] flex flex-col items-center p-6 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                        <div className="sm:col-span-2">
+                            <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0} />
+                        </div>
                         <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
                         <CardPlayers player={team[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={roleValue[2]} cardIndex={2}/>
-                    </div>
-                    <div className="flex gap-6">
                         <CardPlayers player={team[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={roleValue[3]} cardIndex={3}/>
                         <CardPlayers player={team[4]} handleClick={() => placePlayer(4)} SwitchRole={switchRolePlayer} value={roleValue[4]} cardIndex={4}/>
                     </div>
                 </div>
-                <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
+                <div className="bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6">
                     <Stats players={team} playerRoleIdx={roleValue} analysesRoles={analysesRoles()} />
                 </div>  
             </div>
@@ -150,31 +148,29 @@ if (draftedTeams.length === 0) {
     return(
         <>
         
-            <div className="flex flex-col bg-[#0B0B0F] justify-center gap-6 w-screen h-screen">
-                <div className="flex justify-center gap-330">
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Draft</p>
-                    <p className="text-[#ededed] font-bold font-bebas text-6xl">Rodada {rounds}/5</p>
+            <div className="flex flex-col bg-[#0B0B0F] items-center gap-6 w-full min-h-screen p-6 lg:p-0 lg:justify-center">
+                <div className="flex justify-between w-full max-w-[600px] lg:max-w-[1700px]">
+                    <p className="text-[#ededed] font-bold font-bebas text-3xl sm:text-4xl lg:text-6xl">Draft</p>
+                    <p className="text-[#ededed] font-bold font-bebas text-3xl sm:text-4xl lg:text-6xl">Rodada {rounds}/5</p>
                 </div>
-                <div className="flex justify-center gap-6">
-                <div className=" flex flex-col bg-[#1C1C22] w-[350px] h-[750px] p-6 gap-4">
+                <div className="flex flex-col lg:flex-row justify-center gap-6 w-full items-center lg:items-start">
+                <div className="flex flex-col bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6 gap-4">
                    <SelectPlayers  selectedTeams={draftedTeams} onSelectPlayer={setSelectedPlayer} />
                    {countReroll >= 3 ? "" : <RerollTeams removeTeam={removeTeam} setDraftedTeams={setDraftedTeams} setCountReroll={setCountReroll}  /> }
                    
                 </div>
-                <div className="bg-[#1C1C22] w-[1000px] h-[750px] flex flex-col justify-center items-center p-6 gap-6">
-                    <div>
-                        <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0}/>
-                    </div>
-                    <div className="flex gap-6">
+                <div className="bg-[#1C1C22] w-full max-w-[600px] lg:w-[1000px] lg:max-w-none lg:h-[750px] flex flex-col items-center p-6 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+                        <div className="sm:col-span-2">
+                            <StarPlayer starPlayer={team[0]} handleClick={() => placeStarPlayer()} SwitchRole={switchRolePlayer} value={roleValue[0]} cardIndex={0}/>
+                        </div>
                         <CardPlayers player={team[1]} handleClick={() => placePlayer(1)} SwitchRole={switchRolePlayer} value={roleValue[1]} cardIndex={1} />
                         <CardPlayers player={team[2]} handleClick={() => placePlayer(2)} SwitchRole={switchRolePlayer} value={roleValue[2]} cardIndex={2}/>
-                    </div>
-                    <div className="flex gap-6">
                         <CardPlayers player={team[3]} handleClick={() => placePlayer(3)} SwitchRole={switchRolePlayer} value={roleValue[3]} cardIndex={3}/>
                         <CardPlayers player={team[4]} handleClick={() => placePlayer(4)} SwitchRole={switchRolePlayer} value={roleValue[4]} cardIndex={4}/>
                     </div>
                 </div>
-                <div className="bg-[#1C1C22] w-[350px] h-[750px] p-6">
+                <div className="bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6">
                     <Stats players={team} playerRoleIdx={roleValue}  analysesRoles={analysesRoles()} />
                 </div>  
             </div>
