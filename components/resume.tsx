@@ -5,7 +5,6 @@ import Link from "next/link"
 import { useState } from "react"
 import { useSimulationStore } from "@/lib/store"
 import { Team, Player, CampaignMatch, PlayoffResult, MatchCandidate } from "@/lib/types/team"
-import { setReactDebugChannelForHtmlRequest } from "next/dist/server/dev/debug-channel"
 
 type Props = {
     teams: Team[]
@@ -42,10 +41,6 @@ export default function Resume({
     const semiFinal = playoffResult?.semiFinal ?? null
     const final = playoffResult?.final ?? null
 
-    /* ============================================================
-       VITÓRIAS / DERROTAS (nível de série, não de mapa)
-    ============================================================ */
-
     const swissWins = scoreBoard.filter(match => match.won).length
     const swissLosses = scoreBoard.filter(match => !match.won).length
 
@@ -64,16 +59,8 @@ export default function Resume({
         champion ? wins++ : losses++
     }
 
-    /* ============================================================
-       MVPS (aleatórios, com preferência ao Star Player)
-    ============================================================ */
-
     const [teamMvps] = useState(() => biasedRandomInt(Math.min(6, wins)))
     const [starPlayerMvps] = useState(() => biasedRandomInt(teamMvps))
-
-    /* ============================================================
-       MELHOR PARTIDA (sorteada entre todas que aconteceram)
-    ============================================================ */
 
     const quarterFinalIndex = scoreBoard.length
     const semiFinalIndex = scoreBoard.length + 1
@@ -123,24 +110,20 @@ export default function Resume({
         () => candidates[Math.floor(Math.random() * candidates.length)]
     )
 
-    /* ============================================================
-       RENDER
-    ============================================================ */
-
     if (!champion) {
         return (
             <>
-                <div className="bg-[#1c1c22] flex flex-col justify-center w-[910px] h-[500px] p-6 border border-[#0b0b0f]">
+                <div className="bg-[#1c1c22] flex flex-col justify-center w-full max-w-[910px] min-h-[500px] p-4 sm:p-6 border border-[#0b0b0f]">
 
                     <div className="flex justify-center">
-                        <p className="text-[122px] text-[#c8a24a] font-bold font-bebas">Campanha encerrada</p>
+                        <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[122px] text-[#c8a24a] font-bold font-bebas text-center">Campanha encerrada</p>
                     </div>
                     <Separator orientation="horizontal" className="bg-[#0b0b0f] w-full" />
-                    <div className="flex flex-col p-6 gap-12">
+                    <div className="flex flex-col p-3 sm:p-6 gap-8 sm:gap-12">
 
                         <div className="flex flex-col">
                             <p className="text-[#ededed] font-bold">Resumo da Campanha:</p>
-                            <div className="flex gap-10">
+                            <div className="flex flex-wrap gap-6 sm:gap-10">
                                 <div className="flex flex-col">
                                     <p className="text-[#ededed] font-semibold text-2xl">{wins}</p>
                                     <p className="text-[#c8a24a]">vitorias</p>
@@ -156,17 +139,17 @@ export default function Resume({
                             </div>
                         </div>
 
-                        <div className="flex w-fit">
-                            <div className="flex flex-col">
+                        <div className="flex w-full">
+                            <div className="flex flex-col w-full">
                                 <div>
-                                    <p className="text-[#c8a24a] font-bold text-3xl">Star Player</p>
+                                    <p className="text-[#c8a24a] font-bold text-2xl sm:text-3xl">Star Player</p>
                                 </div>
-                                <div className="flex gap-8 px-2 py-1">
+                                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 px-2 py-1">
                                     <div className="flex flex-col">
-                                        <div className="flex gap-2">
-                                            <p className="text-[#ededed] font-bold text-xl">{starPlayer?.name ?? "—"}</p>
+                                        <div className="flex gap-2 flex-wrap">
+                                            <p className="text-[#ededed] font-bold text-lg sm:text-xl">{starPlayer?.name ?? "—"}</p>
                                             {starPlayer?.description && (
-                                                <p className="text-[#ededed] text-xl">{starPlayer.description}</p>
+                                                <p className="text-[#ededed] text-lg sm:text-xl">{starPlayer.description}</p>
                                             )}
                                         </div>
                                         <div>
@@ -182,12 +165,12 @@ export default function Resume({
                                         <div className="flex flex-col">
                                             <div className="flex gap-1">
                                                 <p className="text-[#ededed] text-xs font-light">vs</p>
-                                                <p className="text-[#ededed] text-2xl font-bold">
+                                                <p className="text-[#ededed] text-lg sm:text-2xl font-bold">
                                                     {bestMatch?.opponent?.team} {bestMatch?.opponent?.year}
                                                 </p>
                                             </div>
-                                            <div className="flex justify-end ml-15">
-                                                <p className="text-[#c8a24a]">
+                                            <div className="flex justify-end">
+                                                <p className="text-[#c8a24a] text-sm sm:text-base">
                                                     Melhor Partida{bestMatch?.map ? ` · ${bestMatch.map}` : ""}
                                                 </p>
                                             </div>
@@ -204,7 +187,7 @@ export default function Resume({
 
                 <div className="w-full flex justify-center">
                     <Link href="/PreGame" onClick={() => setResultsGenerated(false)}>
-                        <button className="border-[#c8a24a] border p-2 hover:bg-[#c8a24a] transition-all duration-200"><p className="text-[#ededed] text-2xl font-bold">Começar nova campanha</p></button>
+                        <button className="border-[#c8a24a] border p-2 hover:bg-[#c8a24a] transition-all duration-200"><p className="text-[#ededed] text-lg sm:text-2xl font-bold">Começar nova campanha</p></button>
                     </Link>
                 </div>
             </>
@@ -213,17 +196,17 @@ export default function Resume({
 
     return (
         <>
-            <div className="bg-[#1c1c22] flex flex-col justify-center w-[910px] h-[500px] p-6 border border-[#0b0b0f]">
+            <div className="bg-[#1c1c22] flex flex-col justify-center w-full max-w-[910px] min-h-[500px] p-4 sm:p-6 border border-[#0b0b0f]">
 
                 <div className="flex justify-center">
-                    <p className="text-[143px] text-[#c8a24a] font-bold font-bebas">Campeão do Major</p>
+                    <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[143px] text-[#c8a24a] font-bold font-bebas text-center">Campeão do Major</p>
                 </div>
                 <Separator orientation="horizontal" className="bg-[#0b0b0f] w-full" />
-                <div className="flex flex-col p-6 gap-12">
+                <div className="flex flex-col p-3 sm:p-6 gap-8 sm:gap-12">
 
                     <div className="flex flex-col">
                         <p className="text-[#ededed] font-bold">Resumo da Campanha:</p>
-                        <div className="flex gap-10">
+                        <div className="flex flex-wrap gap-6 sm:gap-10">
                             <div className="flex flex-col">
                                 <p className="text-[#ededed] font-semibold text-2xl">{wins}</p>
                                 <p className="text-[#c8a24a]">vitorias</p>
@@ -239,17 +222,17 @@ export default function Resume({
                         </div>
                     </div>
 
-                    <div className="flex w-fit">
-                        <div className="flex flex-col">
+                    <div className="flex w-full">
+                        <div className="flex flex-col w-full">
                             <div>
-                                <p className="text-[#c8a24a] font-bold text-3xl">Star Player</p>
+                                <p className="text-[#c8a24a] font-bold text-2xl sm:text-3xl">Star Player</p>
                             </div>
-                            <div className="flex gap-8 px-2 py-1">
+                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 px-2 py-1">
                                 <div className="flex flex-col">
-                                    <div className="flex gap-2">
-                                        <p className="text-[#ededed] font-bold text-xl">{starPlayer?.name ?? "—"}</p>
+                                    <div className="flex gap-2 flex-wrap">
+                                        <p className="text-[#ededed] font-bold text-lg sm:text-xl">{starPlayer?.name ?? "—"}</p>
                                         {starPlayer?.description && (
-                                            <p className="text-[#ededed] text-xl">{starPlayer.description}</p>
+                                            <p className="text-[#ededed] text-lg sm:text-xl">{starPlayer.description}</p>
                                         )}
                                     </div>
                                     <div>
@@ -265,12 +248,12 @@ export default function Resume({
                                     <div className="flex flex-col">
                                         <div className="flex gap-1">
                                             <p className="text-[#ededed] text-xs font-light">vs</p>
-                                            <p className="text-[#ededed] text-2xl font-bold">
+                                            <p className="text-[#ededed] text-lg sm:text-2xl font-bold">
                                                 {bestMatch?.opponent?.team} {bestMatch?.opponent?.year}
                                             </p>
                                         </div>
-                                        <div className="flex justify-end ml-15">
-                                            <p className="text-[#c8a24a]">
+                                        <div className="flex justify-end">
+                                            <p className="text-[#c8a24a] text-sm sm:text-base">
                                                 Melhor Partida{bestMatch?.map ? ` · ${bestMatch.map}` : ""}
                                             </p>
                                         </div>
@@ -287,7 +270,7 @@ export default function Resume({
 
             <div className="w-full flex justify-center">
                 <Link href="/PreGame" onClick={() => setResultsGenerated(false)}>
-                    <button className="border-[#c8a24a] border p-2 hover:bg-[#c8a24a] transition-all duration-200"><p className="text-[#ededed] text-2xl font-bold">Começar nova campanha</p></button>
+                    <button className="border-[#c8a24a] border p-2 hover:bg-[#c8a24a] transition-all duration-200"><p className="text-[#ededed] text-lg sm:text-2xl font-bold">Começar nova campanha</p></button>
                 </Link>
             </div>
         </>

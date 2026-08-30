@@ -14,10 +14,6 @@ type Props = {
     onCampaignEnd?: () => void
 }
 
-// ============================================================
-// CONFIGURAÇÕES DA SIMULAÇÃO
-// ============================================================
-
 const COUNT_DURATION = 3
 
 export default function CardSimulation({
@@ -39,22 +35,12 @@ export default function CardSimulation({
 
     const [finishedScores, setFinishedScores] = useState<Record<string, boolean>>({})
 
-    // Controle da Final
     const [finalMapIndex, setFinalMapIndex] = useState(0)
     const [finalMapFinished, setFinalMapFinished] = useState(false)
 
     const quarterFinalIndex = scoreBoard.length
     const semiFinalIndex = scoreBoard.length + 1
     const finalIndex = scoreBoard.length + 2
-
-    /* ============================================================
-       FIM DE CAMPANHA
-    ============================================================ */
-
-
-    /* ============================================================
-       CONTROLE DOS CARDS
-    ============================================================ */
 
     const toggleCard = (card: string) => {
         setOpenCards(prev => ({
@@ -78,21 +64,13 @@ export default function CardSimulation({
         }))
     }
 
-    /* ============================================================
-       FINAL
-    ============================================================ */
-
     const finalMaps = playoffResult?.final ?? []
-
     const currentFinalMap = finalMaps[finalMapIndex]
 
     const finishedFinalMaps = finalMaps.slice(
         0,
         finalMapIndex + (finalMapFinished ? 1 : 0)
     )
-
-    // scoreB = Dream Team
-    // scoreA = adversário
 
     const finalWinsA = finishedFinalMaps.filter(
         map => map.scoreB > map.scoreA
@@ -102,23 +80,13 @@ export default function CardSimulation({
         map => map.scoreA > map.scoreB
     ).length
 
-    /*
-     * A FINAL SÓ É CONSIDERADA TERMINADA QUANDO
-     * NÃO EXISTEM MAIS MAPAS PARA JOGAR.
-     */
     const finalFinished =
         finalMapFinished &&
         finalMapIndex >= finalMaps.length - 1
 
-    /*
-     * DREAM TEAM FOI CAMPEÃO
-     */
     const dreamTeamChampion =
         finalFinished && finalWinsA > finalWinsB
 
-    /*
-     * DREAM TEAM PERDEU A FINAL
-     */
     const dreamTeamLost =
         finalFinished && finalWinsB > finalWinsA
 
@@ -127,20 +95,12 @@ export default function CardSimulation({
             ? currentFinalMap.scoreB > currentFinalMap.scoreA
             : false
 
-    /*
-     * Assim que a série da final termina (seja vitória ou
-     * derrota do Dream Team), avisamos que a campanha acabou.
-     */
     useEffect(() => {
         if (finalFinished) {
             onCampaignEnd?.()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finalFinished])
-
-    /* ============================================================
-       CORES
-    ============================================================ */
 
     const getResultColor = (
         finished: boolean,
@@ -156,13 +116,6 @@ export default function CardSimulation({
             : "text-[#D9534F]"
     }
 
-    /*
-     * COR DO PLACAR FINAL DA SÉRIE
-     *
-     * CAMPEÃO  -> DOURADO
-     * PERDEU    -> VERMELHO
-     * EM ANDAMENTO -> CINZA
-     */
     const getFinalSeriesColor = () => {
 
         if (!finalFinished) {
@@ -180,10 +133,6 @@ export default function CardSimulation({
         return "text-[#8a8a8a]"
     }
 
-    /* ============================================================
-       RENDER
-    ============================================================ */
-
     return (
         <>
             {/* =====================================================
@@ -200,7 +149,7 @@ export default function CardSimulation({
                     index <= activeCard && (
                         <div
                             key={cardKey}
-                            className="w-[910px] bg-[#0b0b0f] pb-[3px]"
+                            className="w-full max-w-[910px] bg-[#0b0b0f] pb-[3px]"
                         >
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
@@ -211,11 +160,11 @@ export default function CardSimulation({
 
                                 <div
                                     onClick={() => toggleCard(cardKey)}
-                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-full h-[100px] p-2 gap-2 sm:gap-4 border border-[#0b0b0f] cursor-pointer"
                                 >
 
                                     <div className="flex flex-col shrink-0">
-                                        <p className="text-[#ededed] font-bold text-xl">
+                                        <p className="text-[#ededed] font-bold text-base sm:text-xl">
                                             Stage 3
                                         </p>
 
@@ -236,10 +185,10 @@ export default function CardSimulation({
                                                 vs
                                             </p>
 
-                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+                                            <p className="flex gap-2 items-baseline text-lg sm:text-2xl md:text-4xl text-[#ededed] font-bold truncate">
                                                 {teams[index]?.team}
 
-                                                <span className="text-xl font-normal shrink-0">
+                                                <span className="text-xs sm:text-base md:text-xl font-normal shrink-0">
                                                     {teams[index]?.year}
                                                 </span>
                                             </p>
@@ -247,14 +196,14 @@ export default function CardSimulation({
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center gap-4 shrink-0">
+                                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
 
-                                        <p className="text-xs text-[#ededed] font-light">
+                                        <p className="hidden sm:block text-xs text-[#ededed] font-light">
                                             bo1
                                         </p>
 
                                         <p
-                                            className={`font-bold text-3xl transition-colors duration-300 ${getResultColor(
+                                            className={`font-bold text-lg sm:text-2xl md:text-3xl transition-colors duration-300 ${getResultColor(
                                                 scoreFinished,
                                                 match.won
                                             )}`}
@@ -282,11 +231,6 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
-                                                    /*
-                                                     * Se essa foi a última partida do swiss e
-                                                     * não existe playoff (foi eliminado),
-                                                     * a campanha acaba aqui.
-                                                     */
                                                     if (isLastSwissMatch && !playoffResult) {
                                                         onCampaignEnd?.()
                                                     }
@@ -325,17 +269,17 @@ export default function CardSimulation({
                                     className="overflow-hidden"
                                 >
 
-                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                    <div className="flex justify-center bg-[#1c1c22] w-full h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                        <div className="flex bg-[#1c1c22] w-full max-w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                            <p className="text-[#ededed] font-bold">
+                                            <p className="text-[#ededed] font-bold text-sm sm:text-base">
                                                 {maps[index]}
                                             </p>
 
                                             {scoreFinished && (
                                                 <p
-                                                    className={`font-bold ${getResultColor(
+                                                    className={`font-bold text-sm sm:text-base ${getResultColor(
                                                         scoreFinished,
                                                         match.won
                                                     )}`}
@@ -366,9 +310,9 @@ export default function CardSimulation({
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="flex items-center justify-center w-[910px] h-[70px]"
+                        className="flex items-center justify-center w-full max-w-[910px] h-[70px]"
                     >
-                        <p className="text-[#ededed] font-bold text-6xl font-bebas">
+                        <p className="text-[#ededed] font-bold text-4xl sm:text-5xl md:text-6xl font-bebas">
                             Playoffs
                         </p>
                     </motion.div>
@@ -386,7 +330,7 @@ export default function CardSimulation({
                     const scoreFinished = !!finishedScores[cardKey]
 
                     return (
-                        <div className="w-[910px] bg-[#0b0b0f] pb-[3px]">
+                        <div className="w-full max-w-[910px] bg-[#0b0b0f] pb-[3px]">
 
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
@@ -397,11 +341,11 @@ export default function CardSimulation({
 
                                 <div
                                     onClick={() => toggleCard(cardKey)}
-                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-full h-[100px] p-2 gap-2 sm:gap-4 border border-[#0b0b0f] cursor-pointer"
                                 >
 
                                     <div className="flex flex-col shrink-0">
-                                        <p className="text-[#ededed] font-bold text-xl">
+                                        <p className="text-[#ededed] font-bold text-base sm:text-xl">
                                             Quarter Final
                                         </p>
                                     </div>
@@ -419,11 +363,11 @@ export default function CardSimulation({
                                                 vs
                                             </p>
 
-                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+                                            <p className="flex gap-2 items-baseline text-lg sm:text-2xl md:text-4xl text-[#ededed] font-bold truncate">
 
                                                 {teams[5]?.team}
 
-                                                <span className="text-xl font-normal shrink-0">
+                                                <span className="text-xs sm:text-base md:text-xl font-normal shrink-0">
                                                     {teams[5]?.year}
                                                 </span>
 
@@ -433,14 +377,14 @@ export default function CardSimulation({
 
                                     </div>
 
-                                    <div className="flex items-center gap-4 shrink-0">
+                                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
 
-                                        <p className="text-xs text-[#ededed] font-light">
+                                        <p className="hidden sm:block text-xs text-[#ededed] font-light">
                                             bo1
                                         </p>
 
                                         <p
-                                            className={`font-bold text-3xl transition-colors duration-300 ${getResultColor(
+                                            className={`font-bold text-lg sm:text-2xl md:text-3xl transition-colors duration-300 ${getResultColor(
                                                 scoreFinished,
                                                 match.won
                                             )}`}
@@ -468,10 +412,6 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
-                                                    /*
-                                                     * Perdeu nas quartas: não existe semi.
-                                                     * Campanha acaba aqui.
-                                                     */
                                                     if (!match.won) {
                                                         onCampaignEnd?.()
                                                     }
@@ -504,17 +444,17 @@ export default function CardSimulation({
                                     className="overflow-hidden"
                                 >
 
-                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                    <div className="flex justify-center bg-[#1c1c22] w-full h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                        <div className="flex bg-[#1c1c22] w-full max-w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                            <p className="text-[#ededed] font-bold">
+                                            <p className="text-[#ededed] font-bold text-sm sm:text-base">
                                                 {maps[quarterFinalIndex]}
                                             </p>
 
                                             {scoreFinished && (
                                                 <p
-                                                    className={`font-bold ${getResultColor(
+                                                    className={`font-bold text-sm sm:text-base ${getResultColor(
                                                         scoreFinished,
                                                         match.won
                                                     )}`}
@@ -546,7 +486,7 @@ export default function CardSimulation({
                     const scoreFinished = !!finishedScores[cardKey]
 
                     return (
-                        <div className="w-[910px] bg-[#0b0b0f] pb-[3px]">
+                        <div className="w-full max-w-[910px] bg-[#0b0b0f] pb-[3px]">
 
                             <motion.div
                                 initial={{ opacity: 0, y: 30 }}
@@ -557,12 +497,12 @@ export default function CardSimulation({
 
                                 <div
                                     onClick={() => toggleCard(cardKey)}
-                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                    className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-full h-[100px] p-2 gap-2 sm:gap-4 border border-[#0b0b0f] cursor-pointer"
                                 >
 
                                     <div className="flex flex-col shrink-0">
 
-                                        <p className="text-[#ededed] font-bold text-xl">
+                                        <p className="text-[#ededed] font-bold text-base sm:text-xl">
                                             Semi Final
                                         </p>
 
@@ -581,11 +521,11 @@ export default function CardSimulation({
                                                 vs
                                             </p>
 
-                                            <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+                                            <p className="flex gap-2 items-baseline text-lg sm:text-2xl md:text-4xl text-[#ededed] font-bold truncate">
 
                                                 {teams[6]?.team}
 
-                                                <span className="text-xl font-normal shrink-0">
+                                                <span className="text-xs sm:text-base md:text-xl font-normal shrink-0">
                                                     {teams[6]?.year}
                                                 </span>
 
@@ -595,14 +535,14 @@ export default function CardSimulation({
 
                                     </div>
 
-                                    <div className="flex items-center gap-4 shrink-0">
+                                    <div className="flex items-center gap-2 sm:gap-4 shrink-0">
 
-                                        <p className="text-xs text-[#ededed] font-light">
+                                        <p className="hidden sm:block text-xs text-[#ededed] font-light">
                                             bo1
                                         </p>
 
                                         <p
-                                            className={`font-bold text-3xl transition-colors duration-300 ${getResultColor(
+                                            className={`font-bold text-lg sm:text-2xl md:text-3xl transition-colors duration-300 ${getResultColor(
                                                 scoreFinished,
                                                 match.won
                                             )}`}
@@ -630,10 +570,6 @@ export default function CardSimulation({
 
                                                     finishScore(cardKey)
 
-                                                    /*
-                                                     * Perdeu na semi: não existe final.
-                                                     * Campanha acaba aqui.
-                                                     */
                                                     if (!match.won) {
                                                         onCampaignEnd?.()
                                                     }
@@ -666,17 +602,17 @@ export default function CardSimulation({
                                     className="overflow-hidden"
                                 >
 
-                                    <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                    <div className="flex justify-center bg-[#1c1c22] w-full h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                                        <div className="flex bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                        <div className="flex bg-[#1c1c22] w-full max-w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
 
-                                            <p className="text-[#ededed] font-bold">
+                                            <p className="text-[#ededed] font-bold text-sm sm:text-base">
                                                 {maps[semiFinalIndex]}
                                             </p>
 
                                             {scoreFinished && (
                                                 <p
-                                                    className={`font-bold ${getResultColor(
+                                                    className={`font-bold text-sm sm:text-base ${getResultColor(
                                                         scoreFinished,
                                                         match.won
                                                     )}`}
@@ -704,7 +640,7 @@ export default function CardSimulation({
                 playoffResult?.final &&
                 currentFinalMap && (
 
-                    <div className="w-[910px] bg-[#C8A24A] pb-[3px]">
+                    <div className="w-full max-w-[910px] bg-[#C8A24A] pb-[3px]">
 
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
@@ -715,12 +651,12 @@ export default function CardSimulation({
 
                             <div
                                 onClick={() => toggleCard("final")}
-                                className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-[910px] h-[100px] p-2 gap-4 border border-[#0b0b0f] cursor-pointer"
+                                className="grid grid-cols-[auto_auto_1fr_auto] items-center bg-[#1c1c22] w-full h-[100px] p-2 gap-2 sm:gap-4 border border-[#0b0b0f] cursor-pointer"
                             >
 
                                 <div className="flex flex-col shrink-0">
 
-                                    <p className="text-[#ededed] font-bold text-xl">
+                                    <p className="text-[#ededed] font-bold text-base sm:text-xl">
                                         Final
                                     </p>
 
@@ -739,11 +675,11 @@ export default function CardSimulation({
                                             vs
                                         </p>
 
-                                        <p className="flex gap-2 items-baseline text-4xl text-[#ededed] font-bold truncate">
+                                        <p className="flex gap-2 items-baseline text-lg sm:text-2xl md:text-4xl text-[#ededed] font-bold truncate">
 
                                             {teams[7]?.team}
 
-                                            <span className="text-xl font-normal shrink-0">
+                                            <span className="text-xs sm:text-base md:text-xl font-normal shrink-0">
                                                 {teams[7]?.year}
                                             </span>
 
@@ -753,16 +689,16 @@ export default function CardSimulation({
 
                                 </div>
 
-                                <div className="flex items-center gap-4 shrink-0">
+                                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
 
-                                    <p className="text-xs text-[#ededed] font-light">
+                                    <p className="hidden sm:block text-xs text-[#ededed] font-light">
                                         bo3
                                     </p>
 
                                     {/* PLACAR DA SÉRIE */}
 
                                     <p
-                                        className={`font-bold text-3xl transition-colors duration-300 ${getFinalSeriesColor()}`}
+                                        className={`font-bold text-lg sm:text-2xl md:text-3xl transition-colors duration-300 ${getFinalSeriesColor()}`}
                                     >
 
                                         {finalWinsA}
@@ -789,17 +725,17 @@ export default function CardSimulation({
                                 className="overflow-hidden"
                             >
 
-                                <div className="flex justify-center bg-[#1c1c22] w-[910px] h-[195px] p-2 gap-4 border border-[#0b0b0f]">
+                                <div className="flex justify-center bg-[#1c1c22] w-full h-[195px] p-2 gap-4 border border-[#0b0b0f]">
 
-                                    <div className="flex flex-col bg-[#1c1c22] w-[820px] h-[180px] p-4 gap-4 border border-[#0b0b0f]">
+                                    <div className="flex flex-col bg-[#1c1c22] w-full max-w-[820px] h-[180px] p-3 sm:p-4 gap-4 border border-[#0b0b0f]">
 
                                         {/* MAPA ATUAL */}
 
-                                        <div className="flex items-center justify-between">
+                                        <div className="flex items-center justify-between gap-2">
 
-                                            <div className="flex items-center gap-4">
+                                            <div className="flex items-center gap-2 sm:gap-4 min-w-0">
 
-                                                <p className="text-[#ededed] font-bold">
+                                                <p className="text-[#ededed] font-bold text-sm sm:text-base shrink-0">
                                                     Mapa {finalMapIndex + 1}
                                                 </p>
 
@@ -808,7 +744,7 @@ export default function CardSimulation({
                                                     className="bg-[#0b0b0f] h-6"
                                                 />
 
-                                                <p className="text-[#ededed] font-bold">
+                                                <p className="text-[#ededed] font-bold text-sm sm:text-base truncate">
                                                     {maps[finalIndex + finalMapIndex]}
                                                 </p>
 
@@ -817,7 +753,7 @@ export default function CardSimulation({
                                             {/* PLACAR DO MAPA */}
 
                                             <p
-                                                className={`font-bold text-2xl transition-colors duration-300 ${
+                                                className={`font-bold text-lg sm:text-2xl transition-colors duration-300 shrink-0 ${
                                                     !finalMapFinished
                                                         ? "text-[#8a8a8a]"
                                                         : currentMapWon
@@ -874,7 +810,7 @@ export default function CardSimulation({
 
                                         {finishedFinalMaps.length > 0 && (
 
-                                            <div className="flex gap-4 mt-auto">
+                                            <div className="flex flex-wrap gap-3 sm:gap-4 mt-auto">
 
                                                 {finishedFinalMaps.map(
                                                     (map, index) => {

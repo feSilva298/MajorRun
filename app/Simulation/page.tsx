@@ -77,12 +77,12 @@ export default function Simulation(){
     return(
         <>
         
-        <div className="flex bg-[#0b0b0f] w-full h-full p-8 justify-center">
-            <p className="text-[#c8a24a] text-7xl font-bebas">A Campanha</p>    
+        <div className="flex bg-[#0b0b0f] w-full p-6 sm:p-8 justify-center">
+            <p className="text-[#c8a24a] text-4xl sm:text-5xl md:text-7xl font-bebas">A Campanha</p>    
         </div>
 
-        <div className="flex justify-center bg-[#0b0b0f] min-h-screen w-full">
-        <div className="flex flex-col bg-[#1c1c22] w-[920px] h-full items-center gap-12 p-2">
+        <div className="flex justify-center bg-[#0b0b0f] min-h-screen w-full px-4">
+        <div className="flex flex-col bg-[#1c1c22] w-full max-w-[920px] items-center gap-8 sm:gap-12 p-2 pb-8">
             <CardSimulation
                 teams={teams}
                 scoreBoard={scoreBoard}
