@@ -5,7 +5,6 @@ import StarPlayer from "@/components/starplayer"
 import Stats from "@/components/stastistics"
 import SelectPlayers from "@/components/selectplayers"
 import RerollTeams from "@/components/rerollteams"
-import Link from "next/link"
 import { getRandomTeams } from "@/lib/configs"
 import { Player, Team } from "@/lib/types/team"
 import { useState, useEffect, useRef } from "react"
@@ -147,9 +146,9 @@ const slotClass = (filled: boolean) =>
                 <div className="flex flex-col lg:flex-row justify-center gap-6 w-full items-center">
                 
                     <div className="flex bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6 justify-center items-center lg:items-start">
-                        <Link href="/Simulation" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="w-full max-w-[300px] hover:bg-[#c8a24a] transition-all duration-200">
+                        <a href="./Simulation.html" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="w-full max-w-[300px] hover:bg-[#c8a24a] transition-all duration-200">
                             <button className="w-full text-[#ededed] text-2xl sm:text-3xl lg:text-4xl font-bold border-[#c8a24a] border-2 p-4 lg:p-6">Começar</button>
-                        </Link>
+                        </a>
                     </div>
                 
                 <div className="bg-[#1C1C22] w-full max-w-[600px] lg:w-[1000px] lg:max-w-none lg:h-[750px] flex flex-col items-center p-6 gap-6">

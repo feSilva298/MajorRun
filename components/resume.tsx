@@ -1,7 +1,6 @@
 "use client"
-
-import { Separator } from "./ui/separator"
 import Link from "next/link"
+import { Separator } from "./ui/separator"
 import { useState } from "react"
 import { useSimulationStore } from "@/lib/store"
 import { Team, Player, CampaignMatch, PlayoffResult, MatchCandidate } from "@/lib/types/team"
@@ -116,7 +115,7 @@ export default function Resume({
                 <div className="bg-[#1c1c22] flex flex-col justify-center w-full max-w-[910px] min-h-[500px] p-4 sm:p-6 border border-[#0b0b0f]">
 
                     <div className="flex justify-center">
-                        <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[122px] text-[#c8a24a] font-bold font-bebas text-center">Campanha encerrada</p>
+                        <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[121px] text-[#c8a24a] font-bold font-bebas text-center">Campanha encerrada</p>
                     </div>
                     <Separator orientation="horizontal" className="bg-[#0b0b0f] w-full" />
                     <div className="flex flex-col p-3 sm:p-6 gap-8 sm:gap-12">
@@ -199,7 +198,7 @@ export default function Resume({
             <div className="bg-[#1c1c22] flex flex-col justify-center w-full max-w-[910px] min-h-[500px] p-4 sm:p-6 border border-[#0b0b0f]">
 
                 <div className="flex justify-center">
-                    <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[143px] text-[#c8a24a] font-bold font-bebas text-center">Campeão do Major</p>
+                    <p className="text-5xl sm:text-6xl md:text-8xl lg:text-[142px] text-[#c8a24a] font-bold font-bebas text-center">Campeão do Major</p>
                 </div>
                 <Separator orientation="horizontal" className="bg-[#0b0b0f] w-full" />
                 <div className="flex flex-col p-3 sm:p-6 gap-8 sm:gap-12">
