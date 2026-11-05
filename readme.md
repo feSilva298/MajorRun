@@ -4,6 +4,10 @@ Major Run is a Counter-Strike inspired tournament simulation game where you buil
 
 The game combines player drafting, team composition, role management and tournament simulation into a complete campaign.
 
+## Play
+
+**Vercel:** https://majorrun.vercel.app/
+
 ## Features
 
 * Player draft system
@@ -24,9 +28,7 @@ The game combines player drafting, team composition, role management and tournam
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge\&logo=tailwindcss\&logoColor=white)
 ![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge)
 
-## Play
 
-**Vercel:** https://majorrun.vercel.app/
 
 ## About
 

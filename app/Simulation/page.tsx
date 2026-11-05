@@ -72,7 +72,7 @@ export default function Simulation(){
     if (!allowed) {
         return null
     }
-
+    console.log(dreamTeam)
 
     return(
         <>

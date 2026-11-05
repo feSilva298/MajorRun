@@ -9,7 +9,7 @@ export default function Home(){
             <div className="flex flex-col p-6 sm:p-12">
                 <p className="text-[#C8A24A] text-5xl sm:text-6xl md:text-7xl xl:text-9xl font-sora font-bold">Major<span className="font-sora font-normal">Run</span></p>
                 <p className="text-[#EDEDED] text-sm py-2">Monte. Evolua. Vença.</p>
-                <a href="./PreGame.html">
+                <a href="./PreGame">
                 <button className="bg-[#1C1C22] border-[#C8A24A] border w-40 h-12 sm:w-50 sm:h-15 mt-10 
                 hover:scale-105 transition-all duration-100
                 hover:text-[#C8A24A]

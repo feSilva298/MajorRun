@@ -105,11 +105,7 @@ useEffect(() => {
     setDraftedTeams(getRandomTeams(removeTeam));
 }, [removeTeam]);
 
-/*
- * Quando um jogador é selecionado (fora do modo "rounds === 6",
- * que já não tem seleção), rola a tela até os cards, focando
- * neles sem precisar de scroll manual — principal utilidade no mobile.
- */
+
 useEffect(() => {
     if (selectedPlayer) {
         cardsSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
@@ -124,12 +120,7 @@ if (draftedTeams.length === 0) {
     );
 }
 
-/*
- * Classe aplicada em cada wrapper de card: quando há um jogador
- * selecionado, os slots vazios sobem de camada (acima do overlay)
- * e ganham destaque; os preenchidos ficam por baixo, escurecidos
- * junto com o resto da tela.
- */
+
 const slotClass = (filled: boolean) =>
     selectedPlayer && !filled
         ? "relative z-50 ring-2 ring-[#c8a24a] rounded-sm scale-[1.03] transition-all duration-200"
@@ -146,7 +137,7 @@ const slotClass = (filled: boolean) =>
                 <div className="flex flex-col lg:flex-row justify-center gap-6 w-full items-center">
                 
                     <div className="flex bg-[#1C1C22] w-full max-w-[600px] lg:w-[350px] lg:max-w-none lg:h-[750px] p-6 justify-center items-center lg:items-start">
-                        <a href="./Simulation.html" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="w-full max-w-[300px] hover:bg-[#c8a24a] transition-all duration-200">
+                        <a href="./Simulation" onClick={() => {setDreamTeam(team); sessionStorage.setItem("cameFromDraft", "true")}} className="w-full max-w-[300px] hover:bg-[#c8a24a] transition-all duration-200">
                             <button className="w-full text-[#ededed] text-2xl sm:text-3xl lg:text-4xl font-bold border-[#c8a24a] border-2 p-4 lg:p-6">Começar</button>
                         </a>
                     </div>

@@ -12,7 +12,7 @@ export default function PreGame(){
                         Counter-Strike. Cada decisão influencia a força, as funções e a sinergia da equipe.
                          Depois, acompanhe uma simulação completa do Major e descubra se sua escalação é capaz de conquistar o troféu.</p>
                     <div className="flex flex-col justify-end items-center mt-8 lg:mt-0 lg:h-full">
-                        <a href="./Draft.html">
+                        <a href="./Draft">
                             <button className="text-[#EDEDED] hover:bg-[#c8a24a] transition-all duration-200 border-[#C8A24A] border text-lg lg:text-2xl p-3 lg:p-4 font-bold">Começar Campanha</button>
                         </a>
                     </div>
